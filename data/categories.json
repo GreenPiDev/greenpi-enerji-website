@@ -1,0 +1,10 @@
+[
+  { "id": "aydinlatma", "ad": "Aydınlatma" },
+  { "id": "elektrikli-arac-sarj", "ad": "Elektrikli Araç Şarj" },
+  { "id": "endustriyel-cozumler", "ad": "Endüstriyel Çözümler" },
+  { "id": "enerji-izleme-analiz", "ad": "Enerji İzleme ve Analiz" },
+  { "id": "guc-dagitim-sistemleri", "ad": "Güç Dağıtım Sistemleri" },
+  { "id": "kablo-yonetimi", "ad": "Kablo Yönetimi" },
+  { "id": "otomasyon-haberlesme", "ad": "Otomasyon ve Haberleşme" },
+  { "id": "yildirimdan-korunma", "ad": "Yıldırımdan Korunma" }
+]

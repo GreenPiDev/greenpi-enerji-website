@@ -1,0 +1,21 @@
+# Production backend container.
+#
+# PostgreSQL runs as a separate, already-existing container on the VPS
+# (container name: postgres, network: backend) and is NOT managed here.
+# This file must never define/recreate a postgres service.
+services:
+  greenpi-backend:
+    build: ./backend
+    image: greenpi-backend:latest
+    container_name: greenpi-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    ports:
+      - '4100:4100'
+    networks:
+      - backend
+
+networks:
+  backend:
+    external: true

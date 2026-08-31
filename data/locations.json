@@ -1,0 +1,16 @@
+[
+  { "id": "ges-santrali", "ad": "GES Santrali", "excelSutunu": "GES SANTRALİ" },
+  { "id": "res-santrali", "ad": "RES Santrali", "excelSutunu": "RES SANTRALİ" },
+  { "id": "trafo-merkezi", "ad": "Trafo Merkezi", "excelSutunu": "TRAFO MERKEZİ" },
+  { "id": "benzinlik-ges", "ad": "Benzinlik / GES", "excelSutunu": "BENZİNLİK /GES" },
+  { "id": "fabrika", "ad": "Fabrika", "excelSutunu": "FABRİKA" },
+  { "id": "maden-ocagi", "ad": "Maden Ocağı", "excelSutunu": "MADEN OCAĞI" },
+  { "id": "petrokimya", "ad": "Petrokimya", "excelSutunu": "PETROKİMYA" },
+  { "id": "datacenter", "ad": "Data Center", "excelSutunu": "DATACENTER" },
+  { "id": "hastane", "ad": "Hastane", "excelSutunu": "HASTANE" },
+  { "id": "ulasim-altyapi", "ad": "Ulaşım Altyapı (Metro, Tünel)", "excelSutunu": "ULAŞIM ALTYAPI(METRO ,TÜNEL)" },
+  { "id": "gemi-marina", "ad": "Gemi / Marina", "excelSutunu": "GEMİ,MARİNA" },
+  { "id": "golf-sahasi", "ad": "Golf Sahası", "excelSutunu": "GOLF SAHASI" },
+  { "id": "avm", "ad": "AVM", "excelSutunu": "AVM" },
+  { "id": "showroom", "ad": "Showroom", "excelSutunu": "SHOWROOM" }
+]

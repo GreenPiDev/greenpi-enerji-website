@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Location {
+  id       String            @id
+  ad       String
+  sira     Int               @default(0)
+  urunler  ProductLocation[]
+
+  @@map("locations")
+}
+
+model Category {
+  id       String            @id
+  ad       String
+  sira     Int               @default(0)
+  urunler  ProductCategory[]
+
+  @@map("categories")
+}
+
+model Product {
+  id             String             @id
+  marka          String
+  urun           String
+  katalogLink    String?
+  urunWebLink    String?
+  datasheetLink  String?
+  gorselUrl      String?
+  aciklama       String?
+  yayinda        Boolean            @default(true)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  lokasyonlar    ProductLocation[]
+  kategoriler    ProductCategory[]
+
+  @@map("products")
+}
+
+model ProductLocation {
+  productId  String
+  locationId String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@id([productId, locationId])
+  @@map("product_locations")
+}
+
+model ProductCategory {
+  productId  String
+  categoryId String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([productId, categoryId])
+  @@map("product_categories")
+}
