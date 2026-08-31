@@ -2,29 +2,49 @@ import { useEffect, useRef, useState } from 'react'
 import { HERO_VIDEO_INTRO, HERO_VIDEO_LOOP } from '../lib/media'
 
 function Hero() {
-  const [phase, setPhase] = useState<'intro' | 'loop'>('intro')
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const [showLoop, setShowLoop] = useState(false)
+  const introRef = useRef<HTMLVideoElement>(null)
+  const loopRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    videoRef.current?.play().catch(() => {
-      // Autoplay engellenirse (ör. kullanıcı etkileşimi olmadan) sessizce geç.
-    })
-  }, [phase])
+    introRef.current?.play().catch(() => {})
+    // Loop videosu baştan yüklensin ki geçiş anında beklemeden,
+    // siyah kare göstermeden oynatılabilsin.
+    loopRef.current?.load()
+  }, [])
+
+  function handleIntroEnded() {
+    const loop = loopRef.current
+    if (loop) {
+      loop.currentTime = 0
+      loop.play().catch(() => {})
+    }
+    setShowLoop(true)
+  }
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black">
       <video
-        ref={videoRef}
-        key={phase}
-        className="absolute inset-0 h-full w-full object-cover"
-        src={phase === 'intro' ? HERO_VIDEO_INTRO : HERO_VIDEO_LOOP}
+        ref={introRef}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+          showLoop ? 'opacity-0' : 'opacity-100'
+        }`}
+        src={HERO_VIDEO_INTRO}
         autoPlay
         muted
         playsInline
-        loop={phase === 'loop'}
-        onEnded={() => {
-          if (phase === 'intro') setPhase('loop')
-        }}
+        onEnded={handleIntroEnded}
+      />
+      <video
+        ref={loopRef}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+          showLoop ? 'opacity-100' : 'opacity-0'
+        }`}
+        src={HERO_VIDEO_LOOP}
+        muted
+        playsInline
+        loop
+        preload="auto"
       />
     </section>
   )
