@@ -7,16 +7,23 @@ function Hero() {
   const loopRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    introRef.current?.play().catch(() => {})
+    if (introRef.current) {
+      introRef.current.playbackRate = 1.25
+      introRef.current.play().catch(() => {})
+    }
     // Loop videosu baştan yüklensin ki geçiş anında beklemeden,
     // siyah kare göstermeden oynatılabilsin.
-    loopRef.current?.load()
+    if (loopRef.current) {
+      loopRef.current.playbackRate = 0.75
+      loopRef.current.load()
+    }
   }, [])
 
   function handleIntroEnded() {
     const loop = loopRef.current
     if (loop) {
       loop.currentTime = 0
+      loop.playbackRate = 0.75
       loop.play().catch(() => {})
     }
     setShowLoop(true)
