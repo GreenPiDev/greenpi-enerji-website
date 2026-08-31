@@ -83,7 +83,7 @@ function Hero() {
           <button
             type="button"
             onClick={handleExplore}
-            className="group flex items-center gap-3 rounded-full border border-white/30 bg-white/10 px-8 py-4 text-white shadow-lg backdrop-blur-md transition hover:bg-white/20"
+            className="group flex items-center gap-3 rounded-full border border-white/30 bg-white/10 px-8 py-4 text-white shadow-lg backdrop-blur-md transition hover:translate-y-1 hover:bg-white/20"
           >
             <span className="text-base font-medium tracking-wide">{t('Tap to explore')}</span>
             <svg
