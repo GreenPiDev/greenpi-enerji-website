@@ -1,11 +1,14 @@
 import { useTranslation } from 'react-i18next'
+import PageBackground from '../components/PageBackground'
 
 function Contact() {
   const { t } = useTranslation()
   return (
-    <div className="flex min-h-screen items-center justify-center pt-20">
-      <h1 className="text-2xl font-semibold">{t('Contact')}</h1>
-    </div>
+    <PageBackground>
+      <div className="flex min-h-screen items-center justify-center pt-20">
+        <h1 className="text-2xl font-semibold text-white">{t('Contact')}</h1>
+      </div>
+    </PageBackground>
   )
 }
 
