@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
+import multipart from "@fastify/multipart";
 import { publicRoutes } from "./routes/public.js";
 import { adminRoutes } from "./routes/admin.js";
 
@@ -11,6 +12,9 @@ await app.register(cors, {
   credentials: true,
 });
 await app.register(cookie);
+await app.register(multipart, {
+  limits: { fileSize: 100 * 1024 * 1024 },
+});
 
 await app.register(publicRoutes);
 await app.register(adminRoutes);

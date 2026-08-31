@@ -5,6 +5,7 @@ import { prisma } from "../lib/prisma.js";
 import { productInclude, serializeProduct } from "../lib/serialize.js";
 import { signAdminToken, verifyAdminToken } from "../lib/auth.js";
 import { slugify } from "../lib/slug.js";
+import { uploadMedia } from "../lib/cloudinary.js";
 
 const COOKIE_NAME = "greenpi_admin";
 
@@ -54,6 +55,20 @@ export async function adminRoutes(app: FastifyInstance) {
   app.get("/admin/me", { preHandler: requireAdmin }, async () => {
     return { ok: true };
   });
+
+  app.post<{ Querystring: { folder?: string } }>(
+    "/admin/upload",
+    { preHandler: requireAdmin },
+    async (req, reply) => {
+      const folder = req.query.folder === "hero-videos" ? "hero-videos" : "product-images";
+      const file = await req.file();
+      if (!file) return reply.code(400).send({ error: "Dosya bulunamadi" });
+
+      const buffer = await file.toBuffer();
+      const url = await uploadMedia(buffer, file.mimetype, folder);
+      return { url };
+    }
+  );
 
   app.get("/admin/products", { preHandler: requireAdmin }, async () => {
     const products = await prisma.product.findMany({
