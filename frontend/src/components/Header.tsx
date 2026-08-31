@@ -26,9 +26,10 @@ function Header() {
             <Link
               key={item.to}
               to={item.to}
-              className="text-sm font-medium tracking-wide text-white/90 transition hover:text-white"
+              className="group relative py-1 text-sm font-medium tracking-wide text-white/90 transition hover:text-white"
             >
               {t(item.label)}
+              <span className="absolute inset-x-0 bottom-0 h-px w-full origin-left scale-x-0 bg-white transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </Link>
           ))}
         </nav>
