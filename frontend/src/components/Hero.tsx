@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { HERO_VIDEO_INTRO, HERO_VIDEO_LOOP } from '../lib/media'
+import { MAP_MARKERS } from '../lib/mapMarkers'
+import MapMarker from './MapMarker'
 
 const TRANSITION_MS = 450
 
@@ -70,6 +72,14 @@ function Hero() {
         loop
         preload="auto"
       />
+      {showLoop && (
+        <div className="absolute inset-0">
+          {MAP_MARKERS.map((marker) => (
+            <MapMarker key={marker.locationId} x={marker.x} y={marker.y} nameKey={marker.nameKey} />
+          ))}
+        </div>
+      )}
+
       <div
         className="pointer-events-none absolute inset-0 bg-black transition-opacity ease-in-out"
         style={{
