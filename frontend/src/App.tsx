@@ -13,10 +13,10 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/hakkimizda" element={<About />} />
-          <Route path="/cozumlerimiz" element={<Solutions />} />
-          <Route path="/urunlerimiz" element={<Products />} />
-          <Route path="/iletisim" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/solutions" element={<Solutions />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/contact" element={<Contact />} />
         </Route>
       </Routes>
     </BrowserRouter>

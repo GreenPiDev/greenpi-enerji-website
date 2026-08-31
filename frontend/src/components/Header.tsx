@@ -4,10 +4,10 @@ import logo from '../assets/logo.png'
 import LanguageSwitcher from './LanguageSwitcher'
 
 const NAV_ITEMS = [
-  { to: '/hakkimizda', label: 'About us' },
-  { to: '/cozumlerimiz', label: 'Solutions' },
-  { to: '/urunlerimiz', label: 'Products' },
-  { to: '/iletisim', label: 'Contact' },
+  { to: '/about', label: 'About us' },
+  { to: '/solutions', label: 'Solutions' },
+  { to: '/products', label: 'Products' },
+  { to: '/contact', label: 'Contact' },
 ]
 
 function Header() {
@@ -37,7 +37,7 @@ function Header() {
           <LanguageSwitcher />
 
           <Link
-            to="/iletisim"
+            to="/contact"
             className="cursor-pointer rounded-full border border-white/30 bg-white/10 px-5 py-2 text-sm font-medium tracking-wide backdrop-blur-md transition hover:bg-white/20"
           >
             {t('Get a quote')}
