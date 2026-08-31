@@ -7,8 +7,6 @@ import ru from "./locales/ru.json";
 import ar from "./locales/ar.json";
 import az from "./locales/az.json";
 
-export const RTL_LANGUAGES = ["ar"];
-
 // Çeviri anahtarları semantik id değil, kaynak (İngilizce) metnin kendisidir.
 // Örn: t("Close") -> tr: "Kapat", en: "Close".
 // Bu yüzden nokta/boşluk içeren key'lerin nested path sanılmaması için
@@ -31,12 +29,13 @@ i18n
     interpolation: { escapeValue: false },
   });
 
-function applyDirection(lng: string) {
+// Layout bilinçli olarak her zaman LTR: Arapça seçilse bile sadece metin
+// çevriliyor, header/menü yerleşimi sabit kalıyor (kullanıcı tercihi).
+function applyLang(lng: string) {
   document.documentElement.lang = lng;
-  document.documentElement.dir = RTL_LANGUAGES.includes(lng) ? "rtl" : "ltr";
 }
 
-applyDirection(i18n.resolvedLanguage ?? "tr");
-i18n.on("languageChanged", applyDirection);
+applyLang(i18n.resolvedLanguage ?? "tr");
+i18n.on("languageChanged", applyLang);
 
 export default i18n;
