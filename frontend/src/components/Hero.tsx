@@ -3,18 +3,30 @@ import { useTranslation } from 'react-i18next'
 import { HERO_VIDEO_INTRO, HERO_VIDEO_LOOP } from '../lib/media'
 import { MAP_MARKERS } from '../lib/mapMarkers'
 import MapMarker from './MapMarker'
+import { getHeroExplored, setHeroExplored } from '../lib/heroState'
 
 const TRANSITION_MS = 450
 
 function Hero() {
   const { t } = useTranslation()
   const [showButton, setShowButton] = useState(false)
-  const [showLoop, setShowLoop] = useState(false)
+  const [showLoop, setShowLoop] = useState(getHeroExplored())
   const [covering, setCovering] = useState(false)
   const introRef = useRef<HTMLVideoElement>(null)
   const loopRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
+    if (getHeroExplored()) {
+      // Kullanıcı daha önce loop aşamasına geçmiş; /home'a tekrar
+      // dönüldüğünde intro videoyu baştan oynatmak yerine direkt loop'a geç.
+      if (loopRef.current) {
+        loopRef.current.playbackRate = 0.75
+        loopRef.current.currentTime = 0
+        loopRef.current.play().catch(() => {})
+      }
+      return
+    }
+
     if (introRef.current) {
       introRef.current.playbackRate = 1.25
       introRef.current.play().catch(() => {})
@@ -32,6 +44,7 @@ function Hero() {
   }
 
   function handleExplore() {
+    setHeroExplored(true)
     setShowButton(false)
 
     // İki video arasında binalar tam örtüşmüyor; direkt kesme/crossfade
@@ -57,8 +70,8 @@ function Hero() {
       <video
         ref={introRef}
         className={`absolute inset-0 h-full w-full object-cover ${showLoop ? 'invisible' : ''}`}
-        src={HERO_VIDEO_INTRO}
-        autoPlay
+        src={showLoop ? undefined : HERO_VIDEO_INTRO}
+        autoPlay={!showLoop}
         muted
         playsInline
         onEnded={handleIntroEnded}
