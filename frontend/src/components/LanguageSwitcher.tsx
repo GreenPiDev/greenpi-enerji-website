@@ -53,7 +53,7 @@ function LanguageSwitcher() {
               i18n.changeLanguage(lang.code)
               setOpen(false)
             }}
-            className="cursor-pointer whitespace-nowrap px-5 py-2 text-left text-sm font-medium tracking-wide transition hover:bg-white/20"
+            className="cursor-pointer whitespace-nowrap px-5 py-2 text-left text-sm font-medium tracking-wide transition hover:bg-black/40"
           >
             {lang.label}
           </button>
