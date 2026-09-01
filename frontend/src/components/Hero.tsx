@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { HERO_VIDEO_INTRO, HERO_VIDEO_LOOP } from '../lib/media'
-import { MAP_MARKERS } from '../lib/mapMarkers'
+import { LOCATION_NAME_KEYS } from '../lib/mapMarkers'
+import { getLocations, type Location } from '../lib/api'
 import MapMarker from './MapMarker'
 import { getHeroExplored, setHeroExplored } from '../lib/heroState'
 
@@ -12,8 +13,13 @@ function Hero() {
   const [showButton, setShowButton] = useState(false)
   const [showLoop, setShowLoop] = useState(getHeroExplored())
   const [covering, setCovering] = useState(false)
+  const [locations, setLocations] = useState<Location[]>([])
   const introRef = useRef<HTMLVideoElement>(null)
   const loopRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    getLocations().then(setLocations).catch(() => {})
+  }, [])
 
   useEffect(() => {
     if (getHeroExplored()) {
@@ -87,9 +93,16 @@ function Hero() {
       />
       {showLoop && (
         <div className="absolute inset-0">
-          {MAP_MARKERS.map((marker) => (
-            <MapMarker key={marker.locationId} x={marker.x} y={marker.y} nameKey={marker.nameKey} />
-          ))}
+          {locations
+            .filter((loc) => loc.xPercent != null && loc.yPercent != null)
+            .map((loc) => (
+              <MapMarker
+                key={loc.id}
+                x={loc.xPercent as number}
+                y={loc.yPercent as number}
+                nameKey={LOCATION_NAME_KEYS[loc.id] ?? loc.ad}
+              />
+            ))}
         </div>
       )}
 

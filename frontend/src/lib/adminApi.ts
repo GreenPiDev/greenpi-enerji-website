@@ -65,6 +65,35 @@ export function adminDeleteProduct(id: string) {
   return request<{ ok: true }>(`/admin/products/${id}`, { method: 'DELETE' })
 }
 
+export type LocationInput = {
+  ad: string
+  sira?: number
+  xPercent?: number | null
+  yPercent?: number | null
+}
+
+export function adminGetLocations() {
+  return request<Location[]>('/admin/locations')
+}
+
+export function adminCreateLocation(data: LocationInput) {
+  return request<Location>('/admin/locations', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+}
+
+export function adminUpdateLocation(id: string, data: LocationInput) {
+  return request<Location>(`/admin/locations/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
+}
+
+export function adminDeleteLocation(id: string) {
+  return request<{ ok: true }>(`/admin/locations/${id}`, { method: 'DELETE' })
+}
+
 export async function adminUploadImage(file: File): Promise<{ url: string }> {
   const formData = new FormData()
   formData.append('file', file)

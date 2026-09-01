@@ -9,6 +9,8 @@ import AdminLogin from './pages/admin/AdminLogin'
 import AdminLayout from './components/admin/AdminLayout'
 import ProductList from './pages/admin/ProductList'
 import ProductForm from './pages/admin/ProductForm'
+import ProductDetail from './pages/admin/ProductDetail'
+import AdminLocations from './pages/admin/AdminLocations'
 
 function App() {
   return (
@@ -26,7 +28,9 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<ProductList />} />
           <Route path="products/new" element={<ProductForm />} />
+          <Route path="products/:id" element={<ProductDetail />} />
           <Route path="products/:id/edit" element={<ProductForm />} />
+          <Route path="locations" element={<AdminLocations />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -15,6 +15,13 @@ const cookieOptions = {
   path: "/",
 };
 
+const locationInput = z.object({
+  ad: z.string().min(1),
+  sira: z.number().int().optional(),
+  xPercent: z.number().min(0).max(100).nullable().optional(),
+  yPercent: z.number().min(0).max(100).nullable().optional(),
+});
+
 const productInput = z.object({
   marka: z.string().min(1),
   urun: z.string().min(1),
@@ -156,6 +163,73 @@ export async function adminRoutes(app: FastifyInstance) {
       const exists = await prisma.product.findUnique({ where: { id } });
       if (!exists) return reply.code(404).send({ error: "Urun bulunamadi" });
       await prisma.product.delete({ where: { id } });
+      return { ok: true };
+    }
+  );
+
+  app.get("/admin/locations", { preHandler: requireAdmin }, async () => {
+    return prisma.location.findMany({ orderBy: { sira: "asc" } });
+  });
+
+  app.post("/admin/locations", { preHandler: requireAdmin }, async (req, reply) => {
+    const parsed = locationInput.safeParse(req.body);
+    if (!parsed.success) return reply.code(400).send({ error: parsed.error.flatten() });
+    const data = parsed.data;
+
+    const baseId = slugify(data.ad);
+    let id = baseId;
+    let n = 1;
+    while (await prisma.location.findUnique({ where: { id } })) {
+      n += 1;
+      id = `${baseId}-${n}`;
+    }
+
+    const maxSira = await prisma.location.aggregate({ _max: { sira: true } });
+    const created = await prisma.location.create({
+      data: {
+        id,
+        ad: data.ad,
+        sira: data.sira ?? (maxSira._max.sira ?? 0) + 1,
+        xPercent: data.xPercent ?? null,
+        yPercent: data.yPercent ?? null,
+      },
+    });
+    return created;
+  });
+
+  app.put<{ Params: { id: string } }>(
+    "/admin/locations/:id",
+    { preHandler: requireAdmin },
+    async (req, reply) => {
+      const parsed = locationInput.safeParse(req.body);
+      if (!parsed.success) return reply.code(400).send({ error: parsed.error.flatten() });
+      const data = parsed.data;
+      const { id } = req.params;
+
+      const exists = await prisma.location.findUnique({ where: { id } });
+      if (!exists) return reply.code(404).send({ error: "Lokasyon bulunamadi" });
+
+      const updated = await prisma.location.update({
+        where: { id },
+        data: {
+          ad: data.ad,
+          sira: data.sira ?? exists.sira,
+          xPercent: data.xPercent ?? null,
+          yPercent: data.yPercent ?? null,
+        },
+      });
+      return updated;
+    }
+  );
+
+  app.delete<{ Params: { id: string } }>(
+    "/admin/locations/:id",
+    { preHandler: requireAdmin },
+    async (req, reply) => {
+      const { id } = req.params;
+      const exists = await prisma.location.findUnique({ where: { id } });
+      if (!exists) return reply.code(404).send({ error: "Lokasyon bulunamadi" });
+      await prisma.location.delete({ where: { id } });
       return { ok: true };
     }
   );

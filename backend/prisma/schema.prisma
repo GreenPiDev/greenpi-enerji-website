@@ -11,6 +11,8 @@ model Location {
   id       String            @id
   ad       String
   sira     Int               @default(0)
+  xPercent Float?
+  yPercent Float?
   urunler  ProductLocation[]
 
   @@map("locations")

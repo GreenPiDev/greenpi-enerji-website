@@ -1,6 +1,6 @@
 export const API_BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4100";
 
-export type Location = { id: string; ad: string; sira: number };
+export type Location = { id: string; ad: string; sira: number; xPercent: number | null; yPercent: number | null };
 export type Category = { id: string; ad: string; sira: number };
 export type Product = {
   id: string;
