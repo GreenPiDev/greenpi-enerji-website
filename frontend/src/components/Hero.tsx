@@ -27,10 +27,26 @@ function Hero() {
   const [covering, setCovering] = useState(false)
   const [locations, setLocations] = useState<Location[]>([])
   const [mediaAspect, setMediaAspect] = useState<number | null>(null)
+  const [showPanHint, setShowPanHint] = useState(false)
   const introRef = useRef<HTMLVideoElement>(null)
   const loopRef = useRef<HTMLVideoElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
+  const panHintTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  function dismissPanHint() {
+    if (panHintTimeoutRef.current) {
+      clearTimeout(panHintTimeoutRef.current)
+      panHintTimeoutRef.current = null
+    }
+    setShowPanHint(false)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (panHintTimeoutRef.current) clearTimeout(panHintTimeoutRef.current)
+    }
+  }, [])
 
   const { stageWidth, stageHeight, top, panEnabled } = useCoverStage(sectionRef, mediaAspect)
   usePanDrag(sectionRef, stageRef, stageWidth, panEnabled)
@@ -91,6 +107,8 @@ function Hero() {
         loop.play().catch(() => {})
       }
       setShowLoop(true)
+      setShowPanHint(true)
+      panHintTimeoutRef.current = setTimeout(() => setShowPanHint(false), 3500)
 
       setTimeout(() => setCovering(false), 30)
     }, TRANSITION_MS)
@@ -133,6 +151,31 @@ function Hero() {
                 label={locationLabel(loc, i18n.resolvedLanguage ?? 'tr')}
               />
             ))}
+      </div>
+
+      <div
+        onPointerDown={dismissPanHint}
+        className={`absolute inset-0 z-10 flex items-center justify-center bg-black/30 backdrop-blur-[2px] transition-opacity duration-300 ease-out sm:hidden ${
+          showPanHint ? 'opacity-100' : 'pointer-events-none opacity-0'
+        }`}
+      >
+        <div className="flex flex-col items-center gap-3 px-8 text-center text-white">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.75}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-9 w-9 animate-pulse"
+          >
+            <path d="M8 12h8" />
+            <path d="m6 9-3 3 3 3" />
+            <path d="m18 9 3 3-3 3" />
+          </svg>
+          <span className="text-sm font-medium tracking-wide">{t('Drag to explore the map')}</span>
+        </div>
       </div>
 
       <div
