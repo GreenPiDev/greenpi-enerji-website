@@ -110,7 +110,7 @@ function Hero() {
       <div
         ref={stageRef}
         className={`absolute left-0 ${panEnabled ? 'cursor-grab active:cursor-grabbing' : ''} ${showLoop ? '' : 'invisible'}`}
-        style={{ width: stageWidth || '100%', height: stageHeight || '100%', top }}
+        style={{ width: stageWidth || '100%', height: stageHeight || '100%', top, touchAction: 'pan-y' }}
       >
         <video
           ref={loopRef}
@@ -144,7 +144,7 @@ function Hero() {
       />
 
       <div
-        className={`absolute inset-x-0 bottom-16 flex justify-center transition-all duration-500 ease-out ${
+        className={`absolute inset-x-0 bottom-24 flex justify-center transition-all duration-500 ease-out sm:bottom-16 ${
           showButton ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
         }`}
       >

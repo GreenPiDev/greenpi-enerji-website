@@ -47,9 +47,9 @@ function Header() {
           hidden ? '-translate-y-full' : 'translate-y-0'
         }`}
       >
-      <div className="flex h-20 w-full items-center justify-between px-6 md:px-10">
-        <button type="button" onClick={() => navigate('/home')} className="cursor-pointer">
-          <img src={logo} alt="Green Pi Enerji" className="h-10 w-auto" />
+      <div className="flex h-16 w-full items-center justify-between px-4 sm:h-20 sm:px-6 md:px-10">
+        <button type="button" onClick={() => navigate('/home')} className="cursor-pointer shrink-0">
+          <img src={logo} alt="Green Pi Enerji" className="h-8 w-auto sm:h-10" />
         </button>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -65,12 +65,12 @@ function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <LanguageSwitcher />
 
           <Link
             to="/contact-form"
-            className="cursor-pointer rounded-full border border-sky-400/30 bg-sky-600 px-5 py-2 text-sm font-medium tracking-wide text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300"
+            className="cursor-pointer whitespace-nowrap rounded-full border border-sky-400/30 bg-sky-600 px-3 py-1.5 text-xs font-medium tracking-wide text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 sm:px-5 sm:py-2 sm:text-sm"
           >
             {t('Get a quote')}
           </Link>
@@ -79,7 +79,7 @@ function Header() {
             type="button"
             onClick={() => setMenuOpen(true)}
             aria-label={t('Menu')}
-            className="cursor-pointer rounded-full border border-sky-400/30 bg-sky-600 p-2.5 text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 md:hidden"
+            className="cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 p-2 text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 sm:p-2.5 md:hidden"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
               <path d="M4 6h16" />
@@ -99,24 +99,11 @@ function Header() {
       />
 
       <div
-        className={`fixed inset-y-0 right-0 z-50 w-72 max-w-[80vw] border-l border-sky-300/20 bg-sky-700/75 text-white backdrop-blur-md transition-transform duration-300 ease-out md:hidden ${
+        className={`fixed inset-y-0 right-0 z-50 w-1/2 border-l border-sky-300/20 bg-sky-700/75 text-white backdrop-blur-md transition-transform duration-300 ease-out md:hidden ${
           menuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex h-20 items-center justify-end border-b border-sky-300/20 px-6">
-          <button
-            type="button"
-            onClick={() => setMenuOpen(false)}
-            aria-label={t('Close')}
-            className="cursor-pointer rounded-full border border-white/30 bg-white/10 p-2 text-white backdrop-blur-md transition hover:bg-white/20"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
-          </button>
-        </div>
-        <nav className="flex flex-col gap-1 p-6">
+        <nav className="flex flex-col gap-1 p-6 pt-4">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.to}

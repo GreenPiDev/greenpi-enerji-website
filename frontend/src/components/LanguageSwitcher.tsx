@@ -33,7 +33,7 @@ function LanguageSwitcher() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="cursor-pointer rounded-full border border-sky-400/30 bg-sky-600 px-5 py-2 text-sm font-medium tracking-wide text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300"
+        className="cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 px-3 py-1.5 text-xs font-medium tracking-wide text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 sm:px-5 sm:py-2 sm:text-sm"
       >
         {current.label}
       </button>
