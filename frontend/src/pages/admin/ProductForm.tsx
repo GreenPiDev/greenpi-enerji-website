@@ -257,7 +257,7 @@ function ProductForm() {
                       onChange={() => setForm((f) => ({ ...f, lokasyonlar: toggle(f.lokasyonlar, loc.id) }))}
                       className="hidden"
                     />
-                    {loc.ad}
+                    {loc.adTr}
                   </label>
                 ))}
               </div>

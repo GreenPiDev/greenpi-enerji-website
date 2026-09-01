@@ -9,7 +9,11 @@ datasource db {
 
 model Location {
   id       String            @id
-  ad       String
+  adTr     String
+  adEn     String?
+  adRu     String?
+  adAr     String?
+  adAz     String?
   sira     Int               @default(0)
   xPercent Float?
   yPercent Float?

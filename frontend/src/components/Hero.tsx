@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { HERO_VIDEO_INTRO, HERO_VIDEO_LOOP } from '../lib/media'
-import { LOCATION_NAME_KEYS } from '../lib/mapMarkers'
 import { getLocations, type Location } from '../lib/api'
 import MapMarker from './MapMarker'
 import { getHeroExplored, setHeroExplored } from '../lib/heroState'
@@ -10,8 +9,19 @@ import { usePanDrag } from '../hooks/usePanDrag'
 
 const TRANSITION_MS = 450
 
+function locationLabel(loc: Location, lang: string): string {
+  const byLang: Record<string, string | null> = {
+    tr: loc.adTr,
+    en: loc.adEn,
+    ru: loc.adRu,
+    ar: loc.adAr,
+    az: loc.adAz,
+  }
+  return byLang[lang] || loc.adTr
+}
+
 function Hero() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [showButton, setShowButton] = useState(false)
   const [showLoop, setShowLoop] = useState(getHeroExplored())
   const [covering, setCovering] = useState(false)
@@ -120,7 +130,7 @@ function Hero() {
                 key={loc.id}
                 x={loc.xPercent as number}
                 y={loc.yPercent as number}
-                nameKey={LOCATION_NAME_KEYS[loc.id] ?? loc.ad}
+                label={locationLabel(loc, i18n.resolvedLanguage ?? 'tr')}
               />
             ))}
       </div>

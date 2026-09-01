@@ -66,7 +66,11 @@ export function adminDeleteProduct(id: string) {
 }
 
 export type LocationInput = {
-  ad: string
+  adTr: string
+  adEn?: string | null
+  adRu?: string | null
+  adAr?: string | null
+  adAz?: string | null
   sira?: number
   xPercent?: number | null
   yPercent?: number | null

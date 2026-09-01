@@ -16,7 +16,11 @@ const cookieOptions = {
 };
 
 const locationInput = z.object({
-  ad: z.string().min(1),
+  adTr: z.string().min(1),
+  adEn: z.string().nullable().optional(),
+  adRu: z.string().nullable().optional(),
+  adAr: z.string().nullable().optional(),
+  adAz: z.string().nullable().optional(),
   sira: z.number().int().optional(),
   xPercent: z.number().min(0).max(100).nullable().optional(),
   yPercent: z.number().min(0).max(100).nullable().optional(),
@@ -176,7 +180,7 @@ export async function adminRoutes(app: FastifyInstance) {
     if (!parsed.success) return reply.code(400).send({ error: parsed.error.flatten() });
     const data = parsed.data;
 
-    const baseId = slugify(data.ad);
+    const baseId = slugify(data.adTr);
     let id = baseId;
     let n = 1;
     while (await prisma.location.findUnique({ where: { id } })) {
@@ -188,7 +192,11 @@ export async function adminRoutes(app: FastifyInstance) {
     const created = await prisma.location.create({
       data: {
         id,
-        ad: data.ad,
+        adTr: data.adTr,
+        adEn: data.adEn ?? null,
+        adRu: data.adRu ?? null,
+        adAr: data.adAr ?? null,
+        adAz: data.adAz ?? null,
         sira: data.sira ?? (maxSira._max.sira ?? 0) + 1,
         xPercent: data.xPercent ?? null,
         yPercent: data.yPercent ?? null,
@@ -212,7 +220,11 @@ export async function adminRoutes(app: FastifyInstance) {
       const updated = await prisma.location.update({
         where: { id },
         data: {
-          ad: data.ad,
+          adTr: data.adTr,
+          adEn: data.adEn ?? null,
+          adRu: data.adRu ?? null,
+          adAr: data.adAr ?? null,
+          adAz: data.adAz ?? null,
           sira: data.sira ?? exists.sira,
           xPercent: data.xPercent ?? null,
           yPercent: data.yPercent ?? null,
