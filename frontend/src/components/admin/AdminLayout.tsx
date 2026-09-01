@@ -3,9 +3,15 @@ import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { adminLogout, adminMe } from '../../lib/adminApi'
 import PageBackground from '../PageBackground'
 
+const NAV_ITEMS = [
+  { to: '/admin', end: true, label: 'Ürünler' },
+  { to: '/admin/locations', end: false, label: 'Lokasyonlar' },
+]
+
 function AdminLayout() {
   const navigate = useNavigate()
   const [status, setStatus] = useState<'checking' | 'authed' | 'anon'>('checking')
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     adminMe()
@@ -14,6 +20,7 @@ function AdminLayout() {
   }, [])
 
   async function handleLogout() {
+    setMenuOpen(false)
     await adminLogout().catch(() => {})
     navigate('/admin/login', { replace: true })
   }
@@ -33,45 +40,96 @@ function AdminLayout() {
   return (
     <PageBackground>
       <div className="min-h-screen text-white">
-        <header className="flex items-center justify-between border-b border-white/10 bg-white/5 px-6 py-4 backdrop-blur-md">
-          <div className="flex items-center gap-6">
-            <h1 className="text-lg font-semibold">Green Pi Admin</h1>
-            <nav className="flex items-center gap-2">
-              <NavLink
-                to="/admin"
-                end
-                className={({ isActive }) =>
-                  `rounded-full border px-4 py-1.5 text-sm transition ${
-                    isActive
-                      ? 'border-white/30 bg-white/15 text-white'
-                      : 'border-white/10 text-white/60 hover:bg-white/10 hover:text-white'
-                  }`
-                }
-              >
-                Ürünler
-              </NavLink>
-              <NavLink
-                to="/admin/locations"
-                className={({ isActive }) =>
-                  `rounded-full border px-4 py-1.5 text-sm transition ${
-                    isActive
-                      ? 'border-white/30 bg-white/15 text-white'
-                      : 'border-white/10 text-white/60 hover:bg-white/10 hover:text-white'
-                  }`
-                }
-              >
-                Lokasyonlar
-              </NavLink>
+        <header className="border-b border-white/10 bg-white/5 backdrop-blur-md">
+          <div className="flex h-16 items-center justify-between px-4 sm:h-20 sm:px-6 md:px-10">
+            <button
+              type="button"
+              onClick={() => navigate('/home')}
+              className="cursor-pointer shrink-0 text-base font-semibold tracking-wide text-white sm:text-lg"
+            >
+              Green Pi Admin
+            </button>
+
+            <nav className="hidden items-center gap-2 md:flex">
+              {NAV_ITEMS.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
+                  className={({ isActive }) =>
+                    `rounded-full border px-4 py-1.5 text-sm transition ${
+                      isActive
+                        ? 'border-white/30 bg-white/15 text-white'
+                        : 'border-white/10 text-white/60 hover:bg-white/10 hover:text-white'
+                    }`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              ))}
             </nav>
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="hidden cursor-pointer rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20 md:inline-block"
+            >
+              Çıkış yap
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Menü"
+              className="cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 p-2 text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 md:hidden"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                <path d="M4 6h16" />
+                <path d="M4 12h16" />
+                <path d="M4 18h16" />
+              </svg>
+            </button>
           </div>
+        </header>
+
+        <div
+          onClick={() => setMenuOpen(false)}
+          className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
+            menuOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+          }`}
+        />
+
+        <div
+          className={`fixed inset-y-0 right-0 z-50 flex w-1/2 flex-col border-l border-sky-300/20 bg-sky-700/75 text-white backdrop-blur-md transition-transform duration-300 ease-out md:hidden ${
+            menuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <nav className="flex flex-col gap-1 p-6 pt-4">
+            {NAV_ITEMS.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                onClick={() => setMenuOpen(false)}
+                className={({ isActive }) =>
+                  `block w-full rounded-lg px-3 py-3 text-left text-base font-medium transition ${
+                    isActive ? 'bg-white/15 text-white' : 'text-white/90 hover:bg-white/10 hover:text-white'
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
           <button
             type="button"
             onClick={handleLogout}
-            className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20"
+            className="mt-auto block w-full cursor-pointer border-t border-white/10 py-4 pr-3 pl-9 text-left text-base font-medium text-white/90 transition hover:bg-white/10 hover:text-white"
           >
             Çıkış yap
           </button>
-        </header>
+        </div>
+
         <main className="p-6">
           <Outlet />
         </main>

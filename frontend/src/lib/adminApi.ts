@@ -71,6 +71,11 @@ export type LocationInput = {
   adRu?: string | null
   adAr?: string | null
   adAz?: string | null
+  aciklamaTr?: string | null
+  aciklamaEn?: string | null
+  aciklamaRu?: string | null
+  aciklamaAr?: string | null
+  aciklamaAz?: string | null
   sira?: number
   xPercent?: number | null
   yPercent?: number | null

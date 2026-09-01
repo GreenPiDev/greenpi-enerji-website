@@ -11,7 +11,18 @@ import { HERO_VIDEO_LOOP } from '../../lib/media'
 import Tooltip from '../../components/Tooltip'
 import ConfirmModal from '../../components/ConfirmModal'
 
-const EMPTY_DRAFT = { adTr: '', adEn: '', adRu: '', adAr: '', adAz: '' }
+const EMPTY_DRAFT = {
+  adTr: '',
+  adEn: '',
+  adRu: '',
+  adAr: '',
+  adAz: '',
+  aciklamaTr: '',
+  aciklamaEn: '',
+  aciklamaRu: '',
+  aciklamaAr: '',
+  aciklamaAz: '',
+}
 
 const NAME_FIELDS: { key: keyof typeof EMPTY_DRAFT; label: string; required?: boolean }[] = [
   { key: 'adTr', label: 'Türkçe', required: true },
@@ -21,6 +32,14 @@ const NAME_FIELDS: { key: keyof typeof EMPTY_DRAFT; label: string; required?: bo
   { key: 'adAz', label: 'Azerice' },
 ]
 
+const DESCRIPTION_FIELDS: { key: keyof typeof EMPTY_DRAFT; label: string }[] = [
+  { key: 'aciklamaTr', label: 'Türkçe' },
+  { key: 'aciklamaEn', label: 'İngilizce' },
+  { key: 'aciklamaRu', label: 'Rusça' },
+  { key: 'aciklamaAr', label: 'Arapça' },
+  { key: 'aciklamaAz', label: 'Azerice' },
+]
+
 function AdminLocations() {
   const [locations, setLocations] = useState<Location[] | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -28,6 +47,7 @@ function AdminLocations() {
   const [pendingDelete, setPendingDelete] = useState<{ id: string; label: string } | null>(null)
   const [formModal, setFormModal] = useState<{ mode: 'create' | 'edit'; id?: string } | null>(null)
   const [draft, setDraft] = useState(EMPTY_DRAFT)
+  const [listMaxHeight, setListMaxHeight] = useState<number | undefined>(undefined)
   const mapRef = useRef<HTMLDivElement>(null)
 
   function reload() {
@@ -35,6 +55,25 @@ function AdminLocations() {
       .then(setLocations)
       .catch((e) => setError(e.message))
   }
+
+  useEffect(() => {
+    const mapEl = mapRef.current
+    if (!mapEl) return
+    const mql = window.matchMedia('(min-width: 1024px)')
+
+    function sync() {
+      setListMaxHeight(mql.matches ? mapEl!.offsetHeight : undefined)
+    }
+
+    sync()
+    const observer = new ResizeObserver(sync)
+    observer.observe(mapEl)
+    mql.addEventListener('change', sync)
+    return () => {
+      observer.disconnect()
+      mql.removeEventListener('change', sync)
+    }
+  }, [])
 
   useEffect(() => {
     reload()
@@ -55,6 +94,11 @@ function AdminLocations() {
         adRu: placingLocation.adRu,
         adAr: placingLocation.adAr,
         adAz: placingLocation.adAz,
+        aciklamaTr: placingLocation.aciklamaTr,
+        aciklamaEn: placingLocation.aciklamaEn,
+        aciklamaRu: placingLocation.aciklamaRu,
+        aciklamaAr: placingLocation.aciklamaAr,
+        aciklamaAz: placingLocation.aciklamaAz,
         sira: placingLocation.sira,
         xPercent,
         yPercent,
@@ -78,6 +122,11 @@ function AdminLocations() {
       adRu: l.adRu ?? '',
       adAr: l.adAr ?? '',
       adAz: l.adAz ?? '',
+      aciklamaTr: l.aciklamaTr ?? '',
+      aciklamaEn: l.aciklamaEn ?? '',
+      aciklamaRu: l.aciklamaRu ?? '',
+      aciklamaAr: l.aciklamaAr ?? '',
+      aciklamaAz: l.aciklamaAz ?? '',
     })
     setFormModal({ mode: 'edit', id: l.id })
   }
@@ -93,6 +142,11 @@ function AdminLocations() {
       adRu: draft.adRu.trim() || null,
       adAr: draft.adAr.trim() || null,
       adAz: draft.adAz.trim() || null,
+      aciklamaTr: draft.aciklamaTr.trim() || null,
+      aciklamaEn: draft.aciklamaEn.trim() || null,
+      aciklamaRu: draft.aciklamaRu.trim() || null,
+      aciklamaAr: draft.aciklamaAr.trim() || null,
+      aciklamaAz: draft.aciklamaAz.trim() || null,
     }
     try {
       if (formModal.mode === 'create') {
@@ -192,7 +246,10 @@ function AdminLocations() {
             ))}
         </div>
 
-        <div className="rounded-2xl border border-white/20 bg-white/5 backdrop-blur-md">
+        <div
+          style={listMaxHeight ? { maxHeight: listMaxHeight } : undefined}
+          className="overflow-y-auto rounded-2xl border border-white/20 bg-white/5 backdrop-blur-md"
+        >
           {!locations ? (
             <p className="p-4 text-white/70">Yükleniyor...</p>
           ) : locations.length === 0 ? (
@@ -281,6 +338,22 @@ function AdminLocations() {
                 </label>
               ))}
             </div>
+
+            <p className="mt-5 mb-2 text-xs font-medium text-white/50">Açıklama</p>
+            <div className="max-h-64 space-y-3 overflow-y-auto pr-1">
+              {DESCRIPTION_FIELDS.map((field) => (
+                <label key={field.key} className="block">
+                  <span className="mb-1 block text-xs text-white/50">{field.label}</span>
+                  <textarea
+                    value={draft[field.key]}
+                    onChange={(e) => setDraft((d) => ({ ...d, [field.key]: e.target.value }))}
+                    rows={2}
+                    className="w-full resize-none rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white outline-none backdrop-blur-md focus:border-white/40"
+                  />
+                </label>
+              ))}
+            </div>
+
             <div className="mt-6 flex justify-end gap-3">
               <button
                 type="button"
