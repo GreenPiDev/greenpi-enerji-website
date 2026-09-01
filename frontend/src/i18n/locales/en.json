@@ -82,5 +82,7 @@
   "Our technical team is here for you": "Our technical team is here for you",
   "You can reach our technical team for product selection, project consultancy, pricing, and delivery timelines.": "You can reach our technical team for product selection, project consultancy, pricing, and delivery timelines.",
   "You must check this box to continue.": "You must check this box to continue.",
-  "Fields marked with an asterisk (*) are required.": "Fields marked with an asterisk (*) are required."
+  "Fields marked with an asterisk (*) are required.": "Fields marked with an asterisk (*) are required.",
+  "Sending...": "Sending...",
+  "Something went wrong while sending your request. Please try again or contact us directly.": "Something went wrong while sending your request. Please try again or contact us directly."
 }

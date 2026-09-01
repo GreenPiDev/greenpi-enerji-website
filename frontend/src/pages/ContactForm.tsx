@@ -23,6 +23,8 @@ const DIRECT_SUBTITLE = 'Our technical team is here for you'
 const DIRECT_TEXT =
   'You can reach our technical team for product selection, project consultancy, pricing, and delivery timelines.'
 
+const SUBMIT_ERROR = 'Something went wrong while sending your request. Please try again or contact us directly.'
+
 const EMPTY = {
   adSoyad: '',
   firma: '',
@@ -33,8 +35,8 @@ const EMPTY = {
   projeAdi: '',
   miktar: '',
   detay: '',
-  website: '',
   onay: false,
+  botcheck: false,
 }
 
 const inputClass =
@@ -76,19 +78,55 @@ function ContactForm() {
   const [form, setForm] = useState(EMPTY)
   const [submitted, setSubmitted] = useState(false)
   const [consentError, setConsentError] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState(false)
 
   function set<K extends keyof typeof EMPTY>(key: K, value: (typeof EMPTY)[K]) {
     setForm((f) => ({ ...f, [key]: value }))
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     if (!form.onay) {
       setConsentError(true)
       return
     }
     setConsentError(false)
-    setSubmitted(true)
+    setError(false)
+    setSending(true)
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          subject: 'Green Pi Enerji - Yeni Teklif Talebi',
+          from_name: form.adSoyad,
+          email: form.eposta,
+          botcheck: form.botcheck,
+          'Ad Soyad': form.adSoyad,
+          'Firma / Kurum': form.firma,
+          Telefon: form.telefon,
+          'E-posta': form.eposta,
+          Şehir: form.sehir,
+          'Sektör / Kullanım Alanı': form.sektor,
+          'Proje Adı': form.projeAdi,
+          'Adet / Tahmini Miktar': form.miktar,
+          'Talep Detayı': form.detay,
+        }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setSubmitted(true)
+      } else {
+        setError(true)
+      }
+    } catch {
+      setError(true)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -136,13 +174,13 @@ function ContactForm() {
               style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
             />
             <div className="relative space-y-8">
-              {/* Bot'lar dolduracak, gerçek kullanıcılar görmeyecek. */}
+              {/* Web3Forms bot-tuzağı: gerçek kullanıcılar görmez, botlar işaretler. */}
               <input
-                type="text"
+                type="checkbox"
                 tabIndex={-1}
                 autoComplete="off"
-                value={form.website}
-                onChange={(e) => set('website', e.target.value)}
+                checked={form.botcheck}
+                onChange={(e) => set('botcheck', e.target.checked)}
                 className="hidden"
                 aria-hidden="true"
               />
@@ -235,12 +273,16 @@ function ContactForm() {
               {submitted ? (
                 <p className="text-emerald-300">{t('Your request has been received, thank you.')}</p>
               ) : (
-                <button
-                  type="submit"
-                  className="cursor-pointer rounded-full border border-sky-400/30 bg-sky-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-sky-500 hover:text-emerald-300"
-                >
-                  {t('Submit Quote Request')}
-                </button>
+                <>
+                  <button
+                    type="submit"
+                    disabled={sending}
+                    className="cursor-pointer rounded-full border border-sky-400/30 bg-sky-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-sky-500 hover:text-emerald-300 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {sending ? t('Sending...') : t('Submit Quote Request')}
+                  </button>
+                  {error && <p className="mt-3 text-sm text-red-400">{t(SUBMIT_ERROR)}</p>}
+                </>
               )}
             </div>
           </form>

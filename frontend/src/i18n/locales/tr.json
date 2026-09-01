@@ -82,5 +82,7 @@
   "Our technical team is here for you": "Teknik ekibimiz yanınızda",
   "You can reach our technical team for product selection, project consultancy, pricing, and delivery timelines.": "Ürün seçimi, proje danışmanlığı, fiyat ve termin konularında teknik ekibimize ulaşabilirsiniz.",
   "You must check this box to continue.": "Devam etmek için bu kutuyu işaretlemeniz gerekiyor.",
-  "Fields marked with an asterisk (*) are required.": "* ile işaretli alanların doldurulması zorunludur."
+  "Fields marked with an asterisk (*) are required.": "* ile işaretli alanların doldurulması zorunludur.",
+  "Sending...": "Gönderiliyor...",
+  "Something went wrong while sending your request. Please try again or contact us directly.": "Talebiniz gönderilirken bir sorun oluştu. Lütfen tekrar deneyin veya bizimle doğrudan iletişime geçin."
 }
