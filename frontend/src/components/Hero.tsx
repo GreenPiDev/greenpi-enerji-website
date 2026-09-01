@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { HERO_VIDEO_INTRO, HERO_VIDEO_LOOP } from '../lib/media'
-import { getLocations, type Location } from '../lib/api'
+import { getLocations, getProducts, type Location, type Product } from '../lib/api'
 import MapMarker from './MapMarker'
+import LocationFilterDrawer from './LocationFilterDrawer'
 import { getHeroExplored, setHeroExplored } from '../lib/heroState'
 import { useCoverStage } from '../hooks/useCoverStage'
 import { usePanDrag } from '../hooks/usePanDrag'
@@ -26,8 +27,11 @@ function Hero() {
   const [showLoop, setShowLoop] = useState(getHeroExplored())
   const [covering, setCovering] = useState(false)
   const [locations, setLocations] = useState<Location[]>([])
+  const [products, setProducts] = useState<Product[]>([])
   const [mediaAspect, setMediaAspect] = useState<number | null>(null)
   const [showPanHint, setShowPanHint] = useState(false)
+  const [drawerLocation, setDrawerLocation] = useState<Location | null>(null)
+  const [drawerOpen, setDrawerOpen] = useState(false)
   const introRef = useRef<HTMLVideoElement>(null)
   const loopRef = useRef<HTMLVideoElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
@@ -53,7 +57,17 @@ function Hero() {
 
   useEffect(() => {
     getLocations().then(setLocations).catch(() => {})
+    getProducts().then(setProducts).catch(() => {})
   }, [])
+
+  function handleMarkerClick(loc: Location) {
+    setDrawerLocation(loc)
+    setDrawerOpen(true)
+  }
+
+  function closeDrawer() {
+    setDrawerOpen(false)
+  }
 
   function handleLoopMetadata() {
     const video = loopRef.current
@@ -149,9 +163,18 @@ function Hero() {
                 x={loc.xPercent as number}
                 y={loc.yPercent as number}
                 label={locationLabel(loc, i18n.resolvedLanguage ?? 'tr')}
+                onClick={() => handleMarkerClick(loc)}
               />
             ))}
       </div>
+
+      <LocationFilterDrawer
+        open={drawerOpen}
+        location={drawerLocation}
+        locations={locations}
+        products={products}
+        onClose={closeDrawer}
+      />
 
       <div
         onPointerDown={dismissPanHint}

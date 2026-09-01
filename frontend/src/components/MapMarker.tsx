@@ -2,12 +2,16 @@ type MapMarkerProps = {
   x: number
   y: number
   label: string
+  onClick?: () => void
 }
 
-function MapMarker({ x, y, label }: MapMarkerProps) {
+function MapMarker({ x, y, label, onClick }: MapMarkerProps) {
   return (
     <div className="absolute" style={{ left: `${x}%`, top: `${y}%` }}>
-      <div className="group relative -translate-x-1/2 -translate-y-1/2 cursor-pointer">
+      <div
+        onClick={onClick}
+        className="group relative -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+      >
         <span className="absolute inset-0 h-4 w-4 animate-ping rounded-full bg-red-400/60" />
         <span className="relative block h-3 w-3 rounded-full border border-red-100/80 bg-red-500/70 shadow-[0_0_10px_2px_rgba(239,68,68,0.65)] backdrop-blur-sm" />
 
