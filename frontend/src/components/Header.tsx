@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
@@ -15,10 +15,38 @@ function Header() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [hidden, setHidden] = useState(false)
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
+    lastScrollY.current = window.scrollY
+
+    function handleScroll() {
+      const currentY = window.scrollY
+      const delta = currentY - lastScrollY.current
+
+      if (currentY < 80) {
+        setHidden(false)
+      } else if (delta > 10) {
+        setHidden(true)
+      } else if (delta < -10) {
+        setHidden(false)
+      }
+
+      lastScrollY.current = currentY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/20 bg-white/50 text-white backdrop-blur-md">
+      <header
+        className={`fixed inset-x-0 top-0 z-50 border-b border-white/20 bg-white/50 text-white backdrop-blur-md transition-transform duration-300 ease-out ${
+          hidden ? '-translate-y-full' : 'translate-y-0'
+        }`}
+      >
       <div className="flex h-20 w-full items-center justify-between px-6 md:px-10">
         <button type="button" onClick={() => navigate('/home')} className="cursor-pointer">
           <img src={logo} alt="Green Pi Enerji" className="h-10 w-auto" />
@@ -41,7 +69,7 @@ function Header() {
           <LanguageSwitcher />
 
           <Link
-            to="/contact"
+            to="/contact-form"
             className="cursor-pointer rounded-full border border-sky-400/30 bg-sky-600 px-5 py-2 text-sm font-medium tracking-wide text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300"
           >
             {t('Get a quote')}

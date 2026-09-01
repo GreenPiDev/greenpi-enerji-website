@@ -5,6 +5,7 @@ import About from './pages/About'
 import Solutions from './pages/Solutions'
 import Products from './pages/Products'
 import Contact from './pages/Contact'
+import ContactForm from './pages/ContactForm'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminLayout from './components/admin/AdminLayout'
 import ProductList from './pages/admin/ProductList'
@@ -23,6 +24,7 @@ function App() {
           <Route path="/solutions" element={<Solutions />} />
           <Route path="/products" element={<Products />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/contact-form" element={<ContactForm />} />
         </Route>
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>

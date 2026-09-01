@@ -8,8 +8,8 @@ function PageBackground({ children }: { children: ReactNode }) {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${bg})` }}
       />
-      <div className="absolute inset-0 bg-black/55" />
-      <div className="relative">{children}</div>
+      <div className="absolute inset-0 bg-black/25" />
+      <div className="relative page-transition">{children}</div>
     </div>
   )
 }
