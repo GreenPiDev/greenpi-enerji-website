@@ -183,8 +183,8 @@ function AdminLocations() {
                 className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2"
                 style={{ left: `${l.xPercent}%`, top: `${l.yPercent}%` }}
               >
-                <span className="absolute inset-0 h-4 w-4 animate-ping rounded-full bg-sky-400 opacity-75" />
-                <span className="relative block h-4 w-4 rounded-full border border-white/60 bg-sky-400 shadow-[0_0_10px_2px_rgba(56,189,248,0.7)]" />
+                <span className="absolute inset-0 h-4 w-4 animate-ping rounded-full bg-red-500 opacity-75" />
+                <span className="relative block h-4 w-4 rounded-full border border-white/60 bg-red-500 shadow-[0_0_10px_2px_rgba(239,68,68,0.7)]" />
                 <span className="absolute top-full left-1/2 mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/30 bg-black/70 px-2 py-0.5 text-[11px] text-white backdrop-blur-md">
                   {l.ad}
                 </span>
@@ -192,7 +192,7 @@ function AdminLocations() {
             ))}
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-white/20 bg-white/5 backdrop-blur-md">
+        <div className="rounded-2xl border border-white/20 bg-white/5 backdrop-blur-md">
           {!locations ? (
             <p className="p-4 text-white/70">Yükleniyor...</p>
           ) : locations.length === 0 ? (

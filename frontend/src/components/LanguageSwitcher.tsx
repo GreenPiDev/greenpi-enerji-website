@@ -33,13 +33,13 @@ function LanguageSwitcher() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="cursor-pointer rounded-full border border-white/30 bg-white/10 px-5 py-2 text-sm font-medium tracking-wide backdrop-blur-md transition hover:bg-white/20"
+        className="cursor-pointer rounded-full border border-sky-400/30 bg-sky-600 px-5 py-2 text-sm font-medium tracking-wide text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300"
       >
         {current.label}
       </button>
 
       <div
-        className={`absolute right-0 top-full mt-2 flex flex-col overflow-hidden rounded-2xl border border-white/30 bg-white/10 backdrop-blur-md transition-all duration-200 ease-out ${
+        className={`absolute right-0 top-full mt-2 flex flex-col overflow-hidden rounded-2xl border border-white/20 bg-neutral-900/90 backdrop-blur-md transition-all duration-200 ease-out ${
           open
             ? 'pointer-events-auto translate-y-0 opacity-100'
             : 'pointer-events-none -translate-y-2 opacity-0'
@@ -53,7 +53,7 @@ function LanguageSwitcher() {
               i18n.changeLanguage(lang.code)
               setOpen(false)
             }}
-            className="cursor-pointer whitespace-nowrap px-5 py-2 text-left text-sm font-medium tracking-wide transition hover:bg-black/40"
+            className="cursor-pointer whitespace-nowrap px-5 py-2 text-left text-sm font-medium tracking-wide text-white transition hover:bg-black/40"
           >
             {lang.label}
           </button>

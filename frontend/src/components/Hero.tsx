@@ -5,6 +5,8 @@ import { LOCATION_NAME_KEYS } from '../lib/mapMarkers'
 import { getLocations, type Location } from '../lib/api'
 import MapMarker from './MapMarker'
 import { getHeroExplored, setHeroExplored } from '../lib/heroState'
+import { useCoverStage } from '../hooks/useCoverStage'
+import { usePanDrag } from '../hooks/usePanDrag'
 
 const TRANSITION_MS = 450
 
@@ -14,12 +16,25 @@ function Hero() {
   const [showLoop, setShowLoop] = useState(getHeroExplored())
   const [covering, setCovering] = useState(false)
   const [locations, setLocations] = useState<Location[]>([])
+  const [mediaAspect, setMediaAspect] = useState<number | null>(null)
   const introRef = useRef<HTMLVideoElement>(null)
   const loopRef = useRef<HTMLVideoElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+
+  const { stageWidth, stageHeight, top, panEnabled } = useCoverStage(sectionRef, mediaAspect)
+  usePanDrag(sectionRef, stageRef, stageWidth, panEnabled)
 
   useEffect(() => {
     getLocations().then(setLocations).catch(() => {})
   }, [])
+
+  function handleLoopMetadata() {
+    const video = loopRef.current
+    if (video && video.videoWidth && video.videoHeight) {
+      setMediaAspect(video.videoWidth / video.videoHeight)
+    }
+  }
 
   useEffect(() => {
     if (getHeroExplored()) {
@@ -72,7 +87,7 @@ function Hero() {
   }
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black">
+    <section ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-black">
       <video
         ref={introRef}
         className={`absolute inset-0 h-full w-full object-cover ${showLoop ? 'invisible' : ''}`}
@@ -82,18 +97,23 @@ function Hero() {
         playsInline
         onEnded={handleIntroEnded}
       />
-      <video
-        ref={loopRef}
-        className={`absolute inset-0 h-full w-full object-cover ${showLoop ? '' : 'invisible'}`}
-        src={HERO_VIDEO_LOOP}
-        muted
-        playsInline
-        loop
-        preload="auto"
-      />
-      {showLoop && (
-        <div className="absolute inset-0">
-          {locations
+      <div
+        ref={stageRef}
+        className={`absolute left-0 ${panEnabled ? 'cursor-grab active:cursor-grabbing' : ''} ${showLoop ? '' : 'invisible'}`}
+        style={{ width: stageWidth || '100%', height: stageHeight || '100%', top }}
+      >
+        <video
+          ref={loopRef}
+          className="pointer-events-none h-full w-full object-cover"
+          src={HERO_VIDEO_LOOP}
+          muted
+          playsInline
+          loop
+          preload="auto"
+          onLoadedMetadata={handleLoopMetadata}
+        />
+        {showLoop &&
+          locations
             .filter((loc) => loc.xPercent != null && loc.yPercent != null)
             .map((loc) => (
               <MapMarker
@@ -103,8 +123,7 @@ function Hero() {
                 nameKey={LOCATION_NAME_KEYS[loc.id] ?? loc.ad}
               />
             ))}
-        </div>
-      )}
+      </div>
 
       <div
         className="pointer-events-none absolute inset-0 bg-black transition-opacity ease-in-out"
