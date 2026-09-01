@@ -14,6 +14,11 @@ model Location {
   adRu     String?
   adAr     String?
   adAz     String?
+  aciklamaTr String?
+  aciklamaEn String?
+  aciklamaRu String?
+  aciklamaAr String?
+  aciklamaAz String?
   sira     Int               @default(0)
   xPercent Float?
   yPercent Float?
