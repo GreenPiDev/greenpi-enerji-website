@@ -8,6 +8,12 @@ import { slugify } from "../lib/slug.js";
 import { uploadMedia } from "../lib/cloudinary.js";
 
 const COOKIE_NAME = "greenpi_admin";
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: (process.env.NODE_ENV === "production" ? "none" : "lax") as "none" | "lax",
+  path: "/",
+};
 
 const productInput = z.object({
   marka: z.string().min(1),
@@ -37,18 +43,12 @@ export async function adminRoutes(app: FastifyInstance) {
       return reply.code(401).send({ error: "Sifre yanlis" });
     }
     const token = signAdminToken();
-    reply.setCookie(COOKIE_NAME, token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/",
-      maxAge: 60 * 60 * 12,
-    });
+    reply.setCookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: 60 * 60 * 12 });
     return { ok: true };
   });
 
   app.post("/admin/logout", async (req, reply) => {
-    reply.clearCookie(COOKIE_NAME, { path: "/" });
+    reply.clearCookie(COOKIE_NAME, cookieOptions);
     return { ok: true };
   });
 

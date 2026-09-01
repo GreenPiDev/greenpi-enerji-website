@@ -5,6 +5,10 @@ import About from './pages/About'
 import Solutions from './pages/Solutions'
 import Products from './pages/Products'
 import Contact from './pages/Contact'
+import AdminLogin from './pages/admin/AdminLogin'
+import AdminLayout from './components/admin/AdminLayout'
+import ProductList from './pages/admin/ProductList'
+import ProductForm from './pages/admin/ProductForm'
 
 function App() {
   return (
@@ -17,6 +21,12 @@ function App() {
           <Route path="/solutions" element={<Solutions />} />
           <Route path="/products" element={<Products />} />
           <Route path="/contact" element={<Contact />} />
+        </Route>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<ProductList />} />
+          <Route path="products/new" element={<ProductForm />} />
+          <Route path="products/:id/edit" element={<ProductForm />} />
         </Route>
       </Routes>
     </BrowserRouter>
