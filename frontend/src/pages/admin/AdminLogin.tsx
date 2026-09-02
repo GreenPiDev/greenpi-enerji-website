@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import { adminLogin } from '../../lib/adminApi'
 import PageBackground from '../../components/PageBackground'
@@ -26,6 +27,9 @@ function AdminLogin() {
 
   return (
     <PageBackground>
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="flex min-h-screen items-center justify-center px-4">
         <form
           onSubmit={handleSubmit}

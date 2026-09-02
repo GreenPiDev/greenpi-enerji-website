@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
+import Seo from '../components/Seo'
 import { getCategories, getLocations, getProducts, trackProductDetailView } from '../lib/api'
 import type { Category, Location, Product } from '../lib/api'
+import { SITE_URL } from '../lib/seo'
 
 function localize(byLang: Record<string, string | null>, lang: string, fallback: string): string {
   return byLang[lang] || fallback
@@ -109,6 +111,7 @@ function ProductDetail() {
   if (!product) {
     return (
       <PageBackground>
+        <Seo title={t('No products found')} description={t('No products found')} noindex />
         <div className="flex min-h-screen flex-col items-center justify-center gap-4 pt-16">
           <p className="text-sm text-white">{t('No products found')}</p>
           <Link to="/products" className="text-sm font-medium text-emerald-400 hover:text-emerald-300">
@@ -125,8 +128,30 @@ function ProductDetail() {
     product.datasheetLink && { href: product.datasheetLink, label: t('Datasheet') },
   ].filter((d): d is { href: string; label: string } => Boolean(d))
 
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.urun,
+    brand: { '@type': 'Brand', name: product.marka },
+    description: product.aciklama || undefined,
+    image: product.gorselUrl || undefined,
+    url: `${SITE_URL}/products/${product.id}`,
+  }
+
   return (
     <PageBackground>
+      <Seo
+        title={product.urun}
+        description={
+          product.aciklama ||
+          t('Technical specifications, usage areas, and quote request for {{product}} by {{brand}} — Green Pi Enerji.', {
+            product: product.urun,
+            brand: product.marka,
+          })
+        }
+        image={product.gorselUrl || undefined}
+        jsonLd={productJsonLd}
+      />
       <div className="min-h-screen w-full pt-16 sm:pt-20">
         <div className="bg-gradient-to-b from-sky-950/80 to-sky-900/40 pb-16">
         <div className="w-full px-4 pt-6 sm:px-6 md:px-10">

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { adminLogout, adminMe } from '../../lib/adminApi'
 import PageBackground from '../PageBackground'
@@ -29,6 +30,9 @@ function AdminLayout() {
   if (status === 'checking') {
     return (
       <PageBackground>
+        <Helmet>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
         <div className="flex min-h-screen items-center justify-center text-white/70">Yükleniyor...</div>
       </PageBackground>
     )
@@ -40,6 +44,9 @@ function AdminLayout() {
 
   return (
     <PageBackground>
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="min-h-screen text-white">
         <header className="border-b border-[#1e3a8a]/40 bg-[#0a1638]/70 backdrop-blur-md">
           <div className="flex h-16 items-center justify-between px-4 sm:h-20 sm:px-6 md:px-10">

@@ -1,58 +1,71 @@
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
+import Seo from '../components/Seo'
 
 const INTRO_TITLE = 'Technical solution areas tailored to your project, sector, and site conditions'
 
 const INTRO_TEXT =
-  'Green Pi brings together diverse project needs — from renewable energy to medium voltage, from power quality to lightning protection — under a single solution framework.'
+  'Green Pi brings together diverse project needs under a single solution framework, and supports your team with product selection, alternative comparison, and quotation consultancy.'
 
 const SOLUTIONS = [
   {
-    title: 'Renewable Energy',
-    text: 'Solar and wind power plant projects, PV panels, field equipment, power distribution, and energy monitoring solutions.',
+    catId: 'guc-dagitim-sistemleri',
+    title: 'Power Distribution Systems',
+    text: 'Transformers, switchgear cells, protection relays, current and voltage transformers, cable terminations, fuses, and load break switches for power distribution networks.',
   },
   {
-    title: 'Low and Medium Voltage',
-    text: 'Transformers, switchgear cells, relays, current and voltage transformers, cable terminations, fuses, and load break switches.',
+    catId: 'otomasyon-haberlesme',
+    title: 'Automation and Communication',
+    text: 'Industrial modems, grid monitoring relays, fault indicator systems, RTUs, and remote monitoring solutions for automated network operation.',
   },
   {
-    title: 'Panels, SCADA and Communication',
-    text: 'Industrial modems, grid monitoring relays, fault indicator systems, RTUs, energy analyzers, and rectifier solutions.',
+    catId: 'enerji-izleme-analiz',
+    title: 'Energy Monitoring and Analysis',
+    text: 'Power quality recorders, energy analyzers, and monitoring systems that track consumption and protect critical facilities.',
   },
   {
+    catId: 'yildirimdan-korunma',
     title: 'Lightning Protection',
-    text: 'Power and low-current surge arresters, external lightning protection systems, GSM towers, and ship and marina protection solutions.',
+    text: 'Power and low-current surge arresters, and external lightning protection systems for buildings, GSM towers, and marina installations.',
   },
   {
-    title: 'Vehicle Charging Systems',
-    text: 'Electric vehicle charging stations, energy infrastructure, and solar-supported field solutions.',
+    catId: 'elektrikli-arac-sarj',
+    title: 'Electric Vehicle Charging',
+    text: 'Electric vehicle charging stations, supporting energy infrastructure, and solar-supported charging field solutions.',
   },
   {
-    title: 'Ship and Marina Electrics',
-    text: 'IP-rated fixtures, switches and sockets, junction boxes, cable glands, and electrical products suited for marine environments.',
+    catId: 'kablo-yonetimi',
+    title: 'Cable Management',
+    text: 'Cable glands, terminations, junction boxes, and cable management products suited for industrial and marine environments.',
   },
   {
-    title: 'Power Quality',
-    text: 'Power quality recorders, analyzers, protection relays, and uninterrupted auxiliary supply systems for critical facilities.',
+    catId: 'aydinlatma',
+    title: 'Lighting',
+    text: 'IP-rated fixtures, and indoor and outdoor lighting solutions for industrial facilities, marinas, and public spaces.',
   },
   {
-    title: 'Project and Product Consultancy',
-    text: 'Product selection based on sector, building, and application, alternative comparison, catalog, and quotation support.',
+    catId: 'endustriyel-cozumler',
+    title: 'Industrial Solutions',
+    text: 'Tailored electrical products and technical solutions for factories, mining sites, petrochemical facilities, and other industrial applications.',
   },
 ]
 
-function SolutionCard({ title, text }: { title: string; text: string }) {
+function SolutionCard({ catId, title, text }: { catId: string; title: string; text: string }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-emerald-400/15 bg-slate-900/85 p-6 shadow-2xl">
+    <Link
+      to={`/products?cat=${catId}`}
+      className="group relative block overflow-hidden rounded-2xl border border-emerald-400/15 bg-slate-900/85 p-6 shadow-2xl transition hover:border-emerald-400/40"
+    >
       <div
         className="pointer-events-none absolute left-0 top-0 h-24 w-24 bg-emerald-400/20"
         style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
       />
       <div className="relative">
-        <h3 className="mb-3 text-lg font-semibold text-white">{title}</h3>
+        <h3 className="mb-3 text-lg font-semibold text-white group-hover:text-emerald-300">{title}</h3>
         <p className="leading-relaxed text-white/75">{text}</p>
       </div>
-    </div>
+    </Link>
   )
 }
 
@@ -60,6 +73,12 @@ function Solutions() {
   const { t } = useTranslation()
   return (
     <PageBackground>
+      <Seo
+        title={t('Solutions')}
+        description={t(
+          'Power distribution, automation and communication, energy monitoring, lightning protection, EV charging, cable management, lighting, and industrial solutions.',
+        )}
+      />
       <div className="min-h-screen w-full px-6 pb-20 pt-32 md:px-10">
         <h1 className="mb-3 text-3xl font-semibold text-white">{t('Solutions')}</h1>
         <p className="mb-2 text-lg text-white">{t(INTRO_TITLE)}</p>
@@ -67,7 +86,7 @@ function Solutions() {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SOLUTIONS.map((s) => (
-            <SolutionCard key={s.title} title={t(s.title)} text={t(s.text)} />
+            <SolutionCard key={s.catId} catId={s.catId} title={t(s.title)} text={t(s.text)} />
           ))}
         </div>
       </div>

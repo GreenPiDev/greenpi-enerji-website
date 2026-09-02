@@ -2,6 +2,7 @@ import { useState, type FormEvent, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
+import Seo from '../components/Seo'
 
 const TITLE = 'Green Pi Quote Center'
 const SUBTITLE = 'Get a quote for the right product and technical solution for your project'
@@ -131,6 +132,10 @@ function ContactForm() {
 
   return (
     <PageBackground>
+      <Seo
+        title={t(TITLE)}
+        description={t('Request a quote for products and technical solutions from Green Pi Enerji.')}
+      />
       <div className="min-h-screen w-full px-6 pb-20 pt-32 md:px-10">
         <div className="mx-auto w-full">
           <h1 className="mb-3 text-3xl font-semibold text-white">{t(TITLE)}</h1>

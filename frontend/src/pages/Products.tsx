@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
+import Seo from '../components/Seo'
 import { getCategories, getLocations, getProducts } from '../lib/api'
 import type { Category, Location, Product } from '../lib/api'
 
@@ -271,6 +272,12 @@ function Products() {
 
   return (
     <PageBackground>
+      <Seo
+        title={t('Products')}
+        description={t(
+          "Browse Green Pi Enerji's full product catalog — filter by usage area, brand, and category to find the right electrical equipment for your project.",
+        )}
+      />
       <div className="min-h-screen w-full px-4 pb-20 pt-24 sm:px-6 sm:pt-28 md:px-10">
         <h1 className="text-2xl font-semibold text-white sm:text-3xl">{t('Products')}</h1>
         <p className="mb-6 mt-1 text-sm text-white/80 sm:mb-8">

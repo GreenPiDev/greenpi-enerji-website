@@ -2,7 +2,47 @@ import type { FastifyInstance } from "fastify";
 import { prisma } from "../lib/prisma.js";
 import { productInclude, serializeProduct } from "../lib/serialize.js";
 
+const STATIC_PAGES = ["", "/about", "/solutions", "/products", "/contact"];
+
+function escapeXml(value: string): string {
+  return value.replace(/[<>&'"]/g, (c) => {
+    switch (c) {
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case "&":
+        return "&amp;";
+      case "'":
+        return "&apos;";
+      default:
+        return "&quot;";
+    }
+  });
+}
+
 export async function publicRoutes(app: FastifyInstance) {
+  app.get("/sitemap.xml", async (_req, reply) => {
+    const siteUrl = (process.env.FRONTEND_URL ?? "https://greenpi.com.tr").replace(/\/$/, "");
+
+    const products = await prisma.product.findMany({
+      where: { yayinda: true },
+      select: { id: true },
+    });
+
+    const urls = [
+      ...STATIC_PAGES.map((path) => `${siteUrl}${path}`),
+      ...products.map((p) => `${siteUrl}/products/${p.id}`),
+    ];
+
+    const body = urls
+      .map((url) => `  <url>\n    <loc>${escapeXml(url)}</loc>\n  </url>`)
+      .join("\n");
+
+    reply.header("Content-Type", "application/xml; charset=utf-8");
+    return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>`;
+  });
+
   app.get("/api/locations", async () => {
     return prisma.location.findMany({ orderBy: { sira: "asc" } });
   });

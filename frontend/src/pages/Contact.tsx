@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
+import Seo from '../components/Seo'
 
 const INTRO_TITLE = "Let's evaluate your project together"
 
@@ -11,6 +12,26 @@ const TECH_TITLE = 'Technical Request'
 const TECH_SUBTITLE = 'Looking for a quote on a specific product or project?'
 const TECH_TEXT =
   "Share your product name, project details, and contact information. We'll get back to you as soon as possible."
+
+function InstagramIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  )
+}
+
+function LinkedinIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V8h4v2a5.99 5.99 0 0 1 2-2z" />
+      <rect x="2" y="9" width="4" height="12" />
+      <circle cx="4" cy="4" r="2" />
+    </svg>
+  )
+}
 
 function InfoCard({ children }: { children: React.ReactNode }) {
   return (
@@ -28,6 +49,12 @@ function Contact() {
   const { t } = useTranslation()
   return (
     <PageBackground>
+      <Seo
+        title={t('Contact')}
+        description={t(
+          "Contact Green Pi Enerji's Ankara office for product selection, technical solutions, dealership, and project requests.",
+        )}
+      />
       <div className="min-h-screen w-full px-6 pb-20 pt-32 md:px-10">
         <h1 className="mb-3 text-3xl font-semibold text-white">{t('Contact')}</h1>
         <p className="mb-2 text-lg text-white">{t(INTRO_TITLE)}</p>
@@ -54,6 +81,26 @@ function Contact() {
               </a>
               <a href="mailto:info@greenpi.com.tr" className="block hover:text-emerald-300">
                 info@greenpi.com.tr
+              </a>
+            </div>
+            <div className="mt-6 flex items-center gap-3">
+              <a
+                href="https://www.instagram.com/greenpienergy/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-emerald-400/50 hover:text-emerald-300"
+              >
+                <InstagramIcon />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/greenpienergy/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-emerald-400/50 hover:text-emerald-300"
+              >
+                <LinkedinIcon />
               </a>
             </div>
           </InfoCard>
