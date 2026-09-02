@@ -40,7 +40,7 @@ function AdminLayout() {
   return (
     <PageBackground>
       <div className="min-h-screen text-white">
-        <header className="border-b border-white/10 bg-white/5 backdrop-blur-md">
+        <header className="border-b border-[#1e3a8a]/40 bg-[#0a1638]/70 backdrop-blur-md">
           <div className="flex h-16 items-center justify-between px-4 sm:h-20 sm:px-6 md:px-10">
             <button
               type="button"
@@ -57,10 +57,8 @@ function AdminLayout() {
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) =>
-                    `rounded-full border px-4 py-1.5 text-sm transition ${
-                      isActive
-                        ? 'border-white/30 bg-white/15 text-white'
-                        : 'border-white/10 text-white/60 hover:bg-white/10 hover:text-white'
+                    `rounded-full border border-blue-300/50 bg-blue-400/30 px-4 py-1.5 text-sm text-white backdrop-blur-md transition hover:bg-blue-400/40 ${
+                      isActive ? 'bg-blue-400/40' : ''
                     }`
                   }
                 >
@@ -72,7 +70,7 @@ function AdminLayout() {
             <button
               type="button"
               onClick={handleLogout}
-              className="hidden cursor-pointer rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20 md:inline-block"
+              className="hidden cursor-pointer rounded-full border border-blue-300/50 bg-blue-400/30 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-blue-400/40 md:inline-block"
             >
               Çıkış yap
             </button>
@@ -81,7 +79,7 @@ function AdminLayout() {
               type="button"
               onClick={() => setMenuOpen(true)}
               aria-label="Menü"
-              className="cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 p-2 text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 md:hidden"
+              className="cursor-pointer shrink-0 rounded-full border border-blue-300/40 bg-[#12245c] p-2 text-white backdrop-blur-md transition hover:bg-[#1a2f75] hover:text-emerald-300 md:hidden"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
                 <path d="M4 6h16" />
@@ -100,7 +98,7 @@ function AdminLayout() {
         />
 
         <div
-          className={`fixed inset-y-0 right-0 z-50 flex w-1/2 flex-col border-l border-sky-300/20 bg-sky-700/75 text-white backdrop-blur-md transition-transform duration-300 ease-out md:hidden ${
+          className={`fixed inset-y-0 right-0 z-50 flex w-1/2 flex-col border-l border-blue-300/20 bg-[#0a1638]/90 text-white backdrop-blur-md transition-transform duration-300 ease-out md:hidden ${
             menuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >

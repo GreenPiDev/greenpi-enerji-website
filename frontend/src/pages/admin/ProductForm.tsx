@@ -128,7 +128,7 @@ function ProductForm() {
       <button
         type="button"
         onClick={() => navigate('/admin')}
-        className="mb-6 inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white/80 backdrop-blur-md transition hover:bg-white/20 hover:text-white"
+        className="mb-6 inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#1e3a8a]/40 bg-[#0a1638]/60 px-4 py-2 text-sm text-white/80 backdrop-blur-md transition hover:bg-[#12245c]/70 hover:text-white"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
           <path d="M19 12H5" />
@@ -142,14 +142,14 @@ function ProductForm() {
       ) : (
         <form
           onSubmit={handleSubmit}
-          className="w-full rounded-2xl border border-white/20 bg-white/10 p-6 text-white shadow-xl backdrop-blur-md"
+          className="w-full rounded-2xl border border-[#1e3a8a]/40 bg-[#0a1638]/60 p-6 text-white shadow-xl backdrop-blur-md"
         >
           <h2 className="mb-6 text-lg font-semibold">{isEdit ? 'Ürünü düzenle' : 'Yeni ürün'}</h2>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="md:col-span-1">
               <span className="mb-1.5 block text-sm text-white/70">Ürün görseli</span>
-              <label className="group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-xl border border-dashed border-white/20 transition hover:border-white/40">
+              <label className="group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-xl border border-dashed border-[#1e3a8a]/40 transition hover:border-blue-300/60">
                 <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
                 {form.gorselUrl ? (
                   <>
@@ -247,8 +247,8 @@ function ProductForm() {
                     key={loc.id}
                     className={`cursor-pointer rounded-full border px-3 py-1.5 text-sm transition ${
                       form.lokasyonlar.includes(loc.id)
-                        ? 'border-white/40 bg-white/15 text-white'
-                        : 'border-white/15 text-white/70 hover:bg-white/10'
+                        ? 'border-blue-300/50 bg-blue-400/30 text-white'
+                        : 'border-[#1e3a8a]/40 text-white/70 hover:bg-[#12245c]/60'
                     }`}
                   >
                     <input
@@ -270,8 +270,8 @@ function ProductForm() {
                     key={cat.id}
                     className={`cursor-pointer rounded-full border px-3 py-1.5 text-sm transition ${
                       form.kategoriler.includes(cat.id)
-                        ? 'border-white/40 bg-white/15 text-white'
-                        : 'border-white/15 text-white/70 hover:bg-white/10'
+                        ? 'border-blue-300/50 bg-blue-400/30 text-white'
+                        : 'border-[#1e3a8a]/40 text-white/70 hover:bg-[#12245c]/60'
                     }`}
                   >
                     <input
@@ -302,14 +302,14 @@ function ProductForm() {
             <button
               type="submit"
               disabled={saving}
-              className="cursor-pointer rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-md transition hover:bg-white/20 disabled:opacity-50"
+              className="cursor-pointer rounded-full border border-blue-300/50 bg-blue-400/30 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-md transition hover:bg-blue-400/40 disabled:opacity-50"
             >
               {saving ? 'Kaydediliyor...' : 'Kaydet'}
             </button>
             <button
               type="button"
               onClick={() => navigate('/admin')}
-              className="cursor-pointer rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-md transition hover:bg-white/20"
+              className="cursor-pointer rounded-full border border-[#1e3a8a]/40 bg-[#0a1638]/60 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-md transition hover:bg-[#12245c]/70"
             >
               Vazgeç
             </button>
@@ -321,7 +321,7 @@ function ProductForm() {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-white placeholder-white/50 outline-none backdrop-blur-md focus:border-white/40'
+  'w-full rounded-lg border border-[#1e3a8a]/40 bg-[#0a1638]/60 px-3 py-2 text-white placeholder-white/50 outline-none backdrop-blur-md focus:border-blue-300/60'
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (

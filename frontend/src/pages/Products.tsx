@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
 import { getCategories, getLocations, getProducts } from '../lib/api'
 import type { Category, Location, Product } from '../lib/api'
@@ -49,12 +50,12 @@ function FilterSection({
   if (options.length === 0) return null
   return (
     <div className="border-b border-sky-700 py-4">
-      <h3 className="mb-3 text-sm font-semibold text-emerald-100">{title}</h3>
+      <h3 className="mb-3 text-sm font-semibold text-white">{title}</h3>
       <div className="flex max-h-56 flex-col gap-2 overflow-y-auto pr-1">
         {options.map((opt) => (
           <label
             key={opt.value}
-            className="flex cursor-pointer items-center justify-between gap-2 text-sm text-emerald-300 transition hover:text-emerald-100"
+            className="flex cursor-pointer items-center justify-between gap-2 text-sm text-white transition hover:text-white"
           >
             <span className="flex min-w-0 items-center gap-2">
               <input
@@ -65,7 +66,7 @@ function FilterSection({
               />
               <span className="truncate">{opt.label}</span>
             </span>
-            <span className="shrink-0 text-xs text-emerald-500">{opt.count}</span>
+            <span className="shrink-0 text-xs text-white">{opt.count}</span>
           </label>
         ))}
       </div>
@@ -74,9 +75,10 @@ function FilterSection({
 }
 
 function ProductCard({ product }: { product: Product }) {
+  const navigate = useNavigate()
   return (
     <div
-      onClick={() => {}}
+      onClick={() => navigate(`/products/${product.id}`)}
       className="flex cursor-pointer flex-col overflow-hidden rounded-md border border-sky-700 bg-sky-900 shadow-lg transition hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-xl"
     >
       <div className="flex h-40 w-full items-center justify-center overflow-hidden border-b border-sky-900 bg-white">
@@ -91,24 +93,29 @@ function ProductCard({ product }: { product: Product }) {
         )}
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <p className="text-xs font-semibold tracking-wide text-emerald-300">{product.marka}</p>
-        <h3 className="text-sm font-semibold text-emerald-100">{product.urun}</h3>
-        {product.aciklama && <p className="line-clamp-4 text-xs leading-relaxed text-emerald-400">{product.aciklama}</p>}
+        <p className="text-xs font-semibold tracking-wide text-white">{product.marka}</p>
+        <h3 className="text-sm font-semibold text-white">{product.urun}</h3>
+        {product.aciklama && <p className="line-clamp-4 text-xs leading-relaxed text-white">{product.aciklama}</p>}
       </div>
     </div>
   )
 }
 
+function splitParam(value: string | null): string[] {
+  return value ? value.split(',').filter(Boolean) : []
+}
+
 function Products() {
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage ?? 'tr'
+  const [searchParams, setSearchParams] = useSearchParams()
   const [locations, setLocations] = useState<Location[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [products, setProducts] = useState<Product[]>([])
-  const [search, setSearch] = useState('')
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([])
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([])
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [search, setSearch] = useState(() => searchParams.get('q') ?? '')
+  const [selectedLocations, setSelectedLocations] = useState<string[]>(() => splitParam(searchParams.get('loc')))
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(() => splitParam(searchParams.get('brand')))
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(() => splitParam(searchParams.get('cat')))
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   useEffect(() => {
@@ -116,6 +123,16 @@ function Products() {
     getCategories().then(setCategories).catch(() => {})
     getProducts().then(setProducts).catch(() => {})
   }, [])
+
+  useEffect(() => {
+    const params: Record<string, string> = {}
+    if (search) params.q = search
+    if (selectedLocations.length > 0) params.loc = selectedLocations.join(',')
+    if (selectedBrands.length > 0) params.brand = selectedBrands.join(',')
+    if (selectedCategories.length > 0) params.cat = selectedCategories.join(',')
+    setSearchParams(params, { replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, selectedLocations, selectedBrands, selectedCategories])
 
   const brandNames = useMemo(
     () => Array.from(new Set(products.map((p) => p.marka))).sort((a, b) => a.localeCompare(b)),
@@ -217,9 +234,9 @@ function Products() {
   const filterPanel = (
     <>
       <div className="flex items-center justify-between pb-4">
-        <h2 className="text-lg font-semibold text-emerald-100">{t('Filters')}</h2>
+        <h2 className="text-lg font-semibold text-white">{t('Filters')}</h2>
         {hasActiveFilters && (
-          <button type="button" onClick={clearFilters} className="cursor-pointer text-sm text-emerald-400 hover:text-emerald-300">
+          <button type="button" onClick={clearFilters} className="cursor-pointer text-sm text-white hover:text-white">
             {t('Clear')}
           </button>
         )}
@@ -229,7 +246,7 @@ function Products() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder={t('Search products, brand, or feature...')}
-        className="w-full rounded-lg border border-sky-600 bg-sky-900 px-3 py-2.5 text-sm text-emerald-100 placeholder:text-emerald-500 transition focus:border-emerald-400 focus:outline-none"
+        className="w-full rounded-lg border border-white bg-sky-900 px-3 py-2.5 text-sm text-white placeholder:text-white/60 transition focus:border-emerald-400 focus:outline-none"
       />
       <FilterSection
         title={t('Usage Area')}
@@ -270,7 +287,7 @@ function Products() {
               <button
                 type="button"
                 onClick={() => setMobileFiltersOpen(true)}
-                className="cursor-pointer rounded-lg border border-sky-700 bg-sky-900 px-4 py-2 text-sm font-medium text-emerald-200 shadow-sm transition hover:bg-sky-800"
+                className="cursor-pointer rounded-lg border border-sky-700 bg-sky-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-sky-800"
               >
                 {t('Filters')}
               </button>
@@ -281,14 +298,14 @@ function Products() {
                 {badges.map((badge) => (
                   <span
                     key={badge.key}
-                    className="flex items-center gap-1.5 rounded-md border border-sky-600 bg-sky-950 py-1 pl-3 pr-2 text-xs font-medium text-emerald-200 shadow-sm"
+                    className="flex items-center gap-1.5 rounded-md border border-sky-600 bg-sky-950 py-1 pl-3 pr-2 text-xs font-medium text-white shadow-sm"
                   >
                     {badge.label}
                     <button
                       type="button"
                       onClick={badge.onRemove}
                       aria-label={t('Close')}
-                      className="cursor-pointer rounded-sm p-0.5 text-emerald-200 transition hover:bg-sky-700"
+                      className="cursor-pointer rounded-sm p-0.5 text-white transition hover:bg-sky-700"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3">
                         <path d="M18 6 6 18" />
@@ -320,7 +337,7 @@ function Products() {
         }`}
       />
       <div
-        className={`fixed left-0 top-16 bottom-0 z-40 flex w-full max-w-xs flex-col overflow-y-auto border-r border-sky-700 bg-sky-900 p-5 text-emerald-100 shadow-xl transition-transform duration-300 ease-out sm:top-20 lg:hidden ${
+        className={`fixed left-0 top-16 bottom-0 z-40 flex w-full max-w-xs flex-col overflow-y-auto border-r border-sky-700 bg-sky-900 p-5 text-white shadow-xl transition-transform duration-300 ease-out sm:top-20 lg:hidden ${
           mobileFiltersOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

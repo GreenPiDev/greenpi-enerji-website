@@ -190,7 +190,7 @@ function AdminLocations() {
         <button
           type="button"
           onClick={openCreateModal}
-          className="shrink-0 cursor-pointer rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-medium text-emerald-300 backdrop-blur-md transition hover:bg-white/20"
+          className="shrink-0 cursor-pointer rounded-full border border-[#1e3a8a]/40 bg-[#12245c]/70 px-4 py-2 text-sm font-medium text-emerald-300 backdrop-blur-md transition hover:bg-[#1a2f75]/80"
         >
           + Yeni lokasyon
         </button>
@@ -248,14 +248,14 @@ function AdminLocations() {
 
         <div
           style={listMaxHeight ? { maxHeight: listMaxHeight } : undefined}
-          className="overflow-y-auto rounded-2xl border border-white/20 bg-white/5 backdrop-blur-md"
+          className="overflow-y-auto rounded-2xl border border-[#1e3a8a]/40 bg-[#0a1638]/60 backdrop-blur-md"
         >
           {!locations ? (
             <p className="p-4 text-white/70">Yükleniyor...</p>
           ) : locations.length === 0 ? (
             <p className="p-4 text-sm text-white/50">Henüz lokasyon eklenmedi</p>
           ) : (
-            <ul className="divide-y divide-white/10">
+            <ul className="divide-y divide-[#1e3a8a]/30">
               {locations.map((l) => (
                 <li key={l.id} className="flex items-center justify-between gap-2 px-4 py-3">
                   <div className="min-w-0">

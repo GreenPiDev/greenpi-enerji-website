@@ -74,11 +74,11 @@ function ProductList() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Marka veya ürün adı ara..."
-          className="w-full flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white placeholder-white/50 outline-none backdrop-blur-md focus:border-white/40"
+          className="w-full flex-1 rounded-lg border border-[#1e3a8a]/40 bg-[#0a1638]/60 px-4 py-2 text-white placeholder-white/50 outline-none backdrop-blur-md focus:border-blue-300/60"
         />
         <Link
           to="/admin/products/new"
-          className="shrink-0 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-medium text-emerald-300 backdrop-blur-md transition hover:bg-white/20"
+          className="shrink-0 rounded-full border border-[#1e3a8a]/40 bg-[#12245c]/70 px-4 py-2 text-sm font-medium text-emerald-300 backdrop-blur-md transition hover:bg-[#1a2f75]/80"
         >
           + Yeni ürün
         </Link>
@@ -89,9 +89,9 @@ function ProductList() {
       {!products ? (
         <p className="text-white/70">Yükleniyor...</p>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-white/20 bg-white/5 backdrop-blur-md">
+        <div className="overflow-x-auto rounded-lg border border-[#1e3a8a]/40 bg-[#0a1638]/60 backdrop-blur-md">
           <table className="w-full text-left text-sm">
-            <thead className="bg-white/10 text-white/70">
+            <thead className="bg-[#12245c]/70 text-white/70">
               <tr>
                 <th className="px-4 py-3 font-medium">Marka</th>
                 <th className="px-4 py-3 font-medium">Ürün ({filtered.length})</th>
@@ -101,12 +101,12 @@ function ProductList() {
                 <th className="px-4 py-3 font-medium"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/10 text-white">
+            <tbody className="divide-y divide-[#1e3a8a]/30 text-white">
               {filtered.map((p) => (
                 <tr
                   key={p.id}
                   onClick={() => navigate(`/admin/products/${p.id}`)}
-                  className="cursor-pointer hover:bg-white/10"
+                  className="cursor-pointer hover:bg-[#12245c]/50"
                 >
                   <td className="px-4 py-3">{p.marka}</td>
                   <td className="px-4 py-3">{p.urun}</td>

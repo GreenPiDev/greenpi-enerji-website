@@ -226,7 +226,7 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
 
               <div className="mt-4 flex flex-col gap-2">
                 <div className="flex flex-nowrap gap-2">
-                  <PanelButton label={t('Product Detail')} />
+                  <PanelButton label={t('Product Detail')} onClick={() => navigate(`/products/${selectedProduct.id}`)} />
                   <PanelButton label={t('Get a quote')} onClick={() => navigate('/contact-form')} />
                 </div>
                 {(selectedProduct.katalogLink || selectedProduct.urunWebLink || selectedProduct.datasheetLink) && (

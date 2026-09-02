@@ -44,7 +44,7 @@ function ProductDetail() {
       <button
         type="button"
         onClick={() => navigate('/admin')}
-        className="mb-6 inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white/80 backdrop-blur-md transition hover:bg-white/20 hover:text-white"
+        className="mb-6 inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#1e3a8a]/40 bg-[#0a1638]/60 px-4 py-2 text-sm text-white/80 backdrop-blur-md transition hover:bg-[#12245c]/70 hover:text-white"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
           <path d="M19 12H5" />
@@ -58,7 +58,7 @@ function ProductDetail() {
       ) : error ? (
         <p className="text-sm text-red-300">{error}</p>
       ) : product ? (
-        <div className="w-full rounded-2xl border border-white/20 bg-white/10 p-6 text-white shadow-xl backdrop-blur-md">
+        <div className="w-full rounded-2xl border border-[#1e3a8a]/40 bg-[#0a1638]/60 p-6 text-white shadow-xl backdrop-blur-md">
           <div className="mb-6 flex items-start justify-between gap-4">
             <div>
               <h2 className="text-xl font-semibold">{product.marka}</h2>
@@ -67,7 +67,7 @@ function ProductDetail() {
             <div className="flex items-center gap-3">
               <Link
                 to={`/admin/products/${product.id}/edit`}
-                className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-md transition hover:bg-white/20"
+                className="rounded-full border border-blue-300/50 bg-blue-400/30 px-4 py-2 text-sm font-medium text-white backdrop-blur-md transition hover:bg-blue-400/40"
               >
                 Düzenle
               </Link>
@@ -77,9 +77,9 @@ function ProductDetail() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="md:col-span-1">
               {product.gorselUrl ? (
-                <img src={product.gorselUrl} alt={product.urun} className="w-full rounded-xl border border-white/20 object-cover" />
+                <img src={product.gorselUrl} alt={product.urun} className="w-full rounded-xl border border-[#1e3a8a]/40 object-cover" />
               ) : (
-                <div className="flex aspect-square w-full items-center justify-center rounded-xl border border-dashed border-white/20 text-sm text-white/40">
+                <div className="flex aspect-square w-full items-center justify-center rounded-xl border border-dashed border-[#1e3a8a]/40 text-sm text-white/40">
                   Görsel yok
                 </div>
               )}
@@ -108,7 +108,7 @@ function ProductDetail() {
                 <div className="flex flex-wrap gap-2">
                   {locationNames.length > 0 ? (
                     locationNames.map((name) => (
-                      <span key={name} className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-sm text-white/80">
+                      <span key={name} className="rounded-full border border-[#1e3a8a]/40 bg-[#12245c]/50 px-3 py-1 text-sm text-white/80">
                         {name}
                       </span>
                     ))
@@ -123,7 +123,7 @@ function ProductDetail() {
                 <div className="flex flex-wrap gap-2">
                   {categoryNames.length > 0 ? (
                     categoryNames.map((name) => (
-                      <span key={name} className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-sm text-white/80">
+                      <span key={name} className="rounded-full border border-[#1e3a8a]/40 bg-[#12245c]/50 px-3 py-1 text-sm text-white/80">
                         {name}
                       </span>
                     ))
