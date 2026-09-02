@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { adminChangePassword } from '../../lib/adminApi'
+import PasswordInput from '../../components/admin/PasswordInput'
 
 function AdminSettings() {
   const [currentPassword, setCurrentPassword] = useState('')
@@ -45,28 +46,25 @@ function AdminSettings() {
         className="rounded-2xl border border-[#1e3a8a]/40 bg-[#0a1638]/70 p-8 shadow-xl backdrop-blur-md"
       >
         <label className="mb-1 block text-sm text-white/70">Mevcut şifre</label>
-        <input
-          type="password"
+        <PasswordInput
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
           autoFocus
-          className="mb-4 w-full rounded-lg border border-blue-300/40 bg-blue-400/20 px-4 py-2.5 text-white placeholder-white/60 outline-none backdrop-blur-md focus:border-blue-300/70"
+          className="mb-4"
         />
 
         <label className="mb-1 block text-sm text-white/70">Yeni şifre</label>
-        <input
-          type="password"
+        <PasswordInput
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
-          className="mb-4 w-full rounded-lg border border-blue-300/40 bg-blue-400/20 px-4 py-2.5 text-white placeholder-white/60 outline-none backdrop-blur-md focus:border-blue-300/70"
+          className="mb-4"
         />
 
         <label className="mb-1 block text-sm text-white/70">Yeni şifre (tekrar)</label>
-        <input
-          type="password"
+        <PasswordInput
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          className="mb-4 w-full rounded-lg border border-blue-300/40 bg-blue-400/20 px-4 py-2.5 text-white placeholder-white/60 outline-none backdrop-blur-md focus:border-blue-300/70"
+          className="mb-4"
         />
 
         {error && <p className="mb-4 text-sm text-red-300">{error}</p>}

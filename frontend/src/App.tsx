@@ -31,7 +31,8 @@ function App() {
         </Route>
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<ProductList />} />
+          <Route index element={<Navigate to="/admin/products" replace />} />
+          <Route path="products" element={<ProductList />} />
           <Route path="products/new" element={<ProductForm />} />
           <Route path="products/:id" element={<AdminProductDetail />} />
           <Route path="products/:id/edit" element={<ProductForm />} />

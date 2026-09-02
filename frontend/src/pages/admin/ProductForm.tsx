@@ -115,7 +115,7 @@ function ProductForm() {
       } else {
         await adminCreateProduct(payload)
       }
-      navigate('/admin', { replace: true })
+      navigate('/admin/products', { replace: true })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kaydetme başarısız')
     } finally {
@@ -127,7 +127,7 @@ function ProductForm() {
     <div className="w-full">
       <button
         type="button"
-        onClick={() => navigate('/admin')}
+        onClick={() => navigate('/admin/products')}
         className="mb-6 inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#1e3a8a]/40 bg-[#0a1638]/60 px-4 py-2 text-sm text-white/80 backdrop-blur-md transition hover:bg-[#12245c]/70 hover:text-white"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
@@ -308,7 +308,7 @@ function ProductForm() {
             </button>
             <button
               type="button"
-              onClick={() => navigate('/admin')}
+              onClick={() => navigate('/admin/products')}
               className="cursor-pointer rounded-full border border-[#1e3a8a]/40 bg-[#0a1638]/60 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-md transition hover:bg-[#12245c]/70"
             >
               Vazgeç

@@ -4,7 +4,7 @@ import { adminLogout, adminMe } from '../../lib/adminApi'
 import PageBackground from '../PageBackground'
 
 const NAV_ITEMS = [
-  { to: '/admin', end: true, label: 'Ürünler' },
+  { to: '/admin/products', end: true, label: 'Ürünler' },
   { to: '/admin/locations', end: false, label: 'Lokasyonlar' },
   { to: '/admin/settings', end: false, label: 'Ayarlar' },
 ]

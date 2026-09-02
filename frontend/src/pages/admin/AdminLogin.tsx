@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { adminLogin } from '../../lib/adminApi'
 import PageBackground from '../../components/PageBackground'
+import PasswordInput from '../../components/admin/PasswordInput'
 
 function AdminLogin() {
   const navigate = useNavigate()
@@ -15,7 +16,7 @@ function AdminLogin() {
     setLoading(true)
     try {
       await adminLogin(password)
-      navigate('/admin', { replace: true })
+      navigate('/admin/products', { replace: true })
     } catch {
       setError('Şifre yanlış')
     } finally {
@@ -31,13 +32,12 @@ function AdminLogin() {
           className="w-full max-w-sm rounded-2xl border border-[#1e3a8a]/40 bg-[#0a1638]/70 p-8 shadow-xl backdrop-blur-md"
         >
           <h1 className="mb-6 text-center text-xl font-semibold text-white">Admin Girişi</h1>
-          <input
-            type="password"
+          <PasswordInput
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Şifre"
             autoFocus
-            className="mb-4 w-full rounded-lg border border-blue-300/40 bg-blue-400/20 px-4 py-2.5 text-white placeholder-white/60 outline-none backdrop-blur-md focus:border-blue-300/70"
+            className="mb-4"
           />
           {error && <p className="mb-4 text-sm text-red-300">{error}</p>}
           <button
