@@ -79,8 +79,8 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
     <>
       <div
         onClick={selectedProduct ? () => setSelectedProduct(null) : onClose}
-        className={`fixed inset-x-0 top-16 bottom-0 z-20 bg-black/60 backdrop-blur-sm transition-opacity duration-300 sm:top-20 ${
-          open ? 'opacity-100' : 'pointer-events-none opacity-0'
+        className={`fixed inset-x-0 top-16 bottom-0 z-20 sm:top-20 ${
+          open ? '' : 'pointer-events-none'
         }`}
       />
 

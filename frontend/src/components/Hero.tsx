@@ -9,6 +9,8 @@ import { useCoverStage } from '../hooks/useCoverStage'
 import { usePanDrag } from '../hooks/usePanDrag'
 
 const TRANSITION_MS = 450
+const MARKER_ZOOM_SCALE = 1.7
+const MARKER_ZOOM_TRANSITION_MS = 500
 
 function locationLabel(loc: Location, lang: string): string {
   const byLang: Record<string, string | null> = {
@@ -32,6 +34,9 @@ function Hero() {
   const [showPanHint, setShowPanHint] = useState(false)
   const [drawerLocation, setDrawerLocation] = useState<Location | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [markerZoom, setMarkerZoom] = useState<{ originX: number; originY: number; dx: number; dy: number } | null>(
+    null
+  )
   const introRef = useRef<HTMLVideoElement>(null)
   const loopRef = useRef<HTMLVideoElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
@@ -61,12 +66,43 @@ function Hero() {
   }, [])
 
   function handleMarkerClick(loc: Location) {
+    const section = sectionRef.current
+    if (section && stageWidth && stageHeight && loc.xPercent != null && loc.yPercent != null) {
+      const rect = section.getBoundingClientRect()
+      const s = MARKER_ZOOM_SCALE
+      // Nokta, zoom uygulanmadan önceki (transform'suz) layout konumuna göre
+      // hesaplanıyor ki mevcut pan/zoom durumundan bağımsız olarak doğru
+      // çalışsın — transform-origin da her zaman aynı yüzdeye (loc.xPercent/
+      // yPercent) göre sabit kalıyor.
+      const left0 = rect.left
+      const top0 = rect.top + top
+      const pointX = left0 + (loc.xPercent / 100) * stageWidth
+      const pointY = top0 + (loc.yPercent / 100) * stageHeight
+
+      // Noktayı merkeze almak isteriz ama zoom sonrası içerik viewport'u
+      // tam kaplamıyorsa kenarlarda siyahlık görünür — bu yüzden translate,
+      // ölçeklenmiş içeriğin kenarları viewport'u hep kaplayacak şekilde
+      // clamp'leniyor (nokta merkeze mümkün olduğunca yaklaşır, ama viewport
+      // sınırının dışına taşma açığa çıkmaz).
+      const minDx = rect.right - pointX - s * (left0 + stageWidth - pointX)
+      const maxDx = rect.left - pointX - s * (left0 - pointX)
+      const desiredDx = rect.left + rect.width / 2 - pointX
+      const dx = Math.min(maxDx, Math.max(minDx, desiredDx))
+
+      const minDy = rect.bottom - pointY - s * (top0 + stageHeight - pointY)
+      const maxDy = rect.top - pointY - s * (top0 - pointY)
+      const desiredDy = rect.top + rect.height / 2 - pointY
+      const dy = Math.min(maxDy, Math.max(minDy, desiredDy))
+
+      setMarkerZoom({ originX: loc.xPercent, originY: loc.yPercent, dx, dy })
+    }
     setDrawerLocation(loc)
     setDrawerOpen(true)
   }
 
   function closeDrawer() {
     setDrawerOpen(false)
+    setMarkerZoom(null)
   }
 
   function handleLoopMetadata() {
@@ -140,32 +176,46 @@ function Hero() {
         onEnded={handleIntroEnded}
       />
       <div
-        ref={stageRef}
-        className={`absolute left-0 ${panEnabled ? 'cursor-grab active:cursor-grabbing' : ''} ${showLoop ? '' : 'invisible'}`}
-        style={{ width: stageWidth || '100%', height: stageHeight || '100%', top, touchAction: 'pan-y' }}
+        className={`absolute left-0 ${showLoop ? '' : 'invisible'}`}
+        style={{
+          width: stageWidth || '100%',
+          height: stageHeight || '100%',
+          top,
+          transform: markerZoom
+            ? `translate(${markerZoom.dx}px, ${markerZoom.dy}px) scale(${MARKER_ZOOM_SCALE})`
+            : 'translate(0px, 0px) scale(1)',
+          transformOrigin: markerZoom ? `${markerZoom.originX}% ${markerZoom.originY}%` : '50% 50%',
+          transition: `transform ${MARKER_ZOOM_TRANSITION_MS}ms ease`,
+        }}
       >
-        <video
-          ref={loopRef}
-          className="pointer-events-none h-full w-full object-cover"
-          src={HERO_VIDEO_LOOP}
-          muted
-          playsInline
-          loop
-          preload="auto"
-          onLoadedMetadata={handleLoopMetadata}
-        />
-        {showLoop &&
-          locations
-            .filter((loc) => loc.xPercent != null && loc.yPercent != null)
-            .map((loc) => (
-              <MapMarker
-                key={loc.id}
-                x={loc.xPercent as number}
-                y={loc.yPercent as number}
-                label={locationLabel(loc, i18n.resolvedLanguage ?? 'tr')}
-                onClick={() => handleMarkerClick(loc)}
-              />
-            ))}
+        <div
+          ref={stageRef}
+          className={`h-full w-full ${panEnabled ? 'cursor-grab active:cursor-grabbing' : ''}`}
+          style={{ touchAction: 'pan-y' }}
+        >
+          <video
+            ref={loopRef}
+            className="pointer-events-none h-full w-full object-cover"
+            src={HERO_VIDEO_LOOP}
+            muted
+            playsInline
+            loop
+            preload="auto"
+            onLoadedMetadata={handleLoopMetadata}
+          />
+          {showLoop &&
+            locations
+              .filter((loc) => loc.xPercent != null && loc.yPercent != null)
+              .map((loc) => (
+                <MapMarker
+                  key={loc.id}
+                  x={loc.xPercent as number}
+                  y={loc.yPercent as number}
+                  label={locationLabel(loc, i18n.resolvedLanguage ?? 'tr')}
+                  onClick={() => handleMarkerClick(loc)}
+                />
+              ))}
+        </div>
       </div>
 
       <LocationFilterDrawer
