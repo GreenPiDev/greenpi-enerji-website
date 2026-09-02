@@ -31,6 +31,16 @@ const locationInput = z.object({
   yPercent: z.number().min(0).max(100).nullable().optional(),
 });
 
+const passwordInput = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(8),
+});
+
+async function getAdminPasswordHash(): Promise<string | null> {
+  const settings = await prisma.adminSettings.findUnique({ where: { id: "admin" } });
+  return settings?.passwordHash ?? process.env.ADMIN_PASSWORD_HASH ?? null;
+}
+
 const productInput = z.object({
   marka: z.string().min(1),
   urun: z.string().min(1),
@@ -54,7 +64,7 @@ async function requireAdmin(req: FastifyRequest, reply: FastifyReply) {
 export async function adminRoutes(app: FastifyInstance) {
   app.post<{ Body: { password?: string } }>("/admin/login", async (req, reply) => {
     const password = req.body?.password;
-    const hash = process.env.ADMIN_PASSWORD_HASH;
+    const hash = await getAdminPasswordHash();
     if (!hash || !password || !(await bcrypt.compare(password, hash))) {
       return reply.code(401).send({ error: "Sifre yanlis" });
     }
@@ -69,6 +79,26 @@ export async function adminRoutes(app: FastifyInstance) {
   });
 
   app.get("/admin/me", { preHandler: requireAdmin }, async () => {
+    return { ok: true };
+  });
+
+  app.put("/admin/password", { preHandler: requireAdmin }, async (req, reply) => {
+    const parsed = passwordInput.safeParse(req.body);
+    if (!parsed.success) return reply.code(400).send({ error: parsed.error.flatten() });
+    const { currentPassword, newPassword } = parsed.data;
+
+    const hash = await getAdminPasswordHash();
+    if (!hash || !(await bcrypt.compare(currentPassword, hash))) {
+      return reply.code(401).send({ error: "Mevcut sifre yanlis" });
+    }
+
+    const newHash = await bcrypt.hash(newPassword, 12);
+    await prisma.adminSettings.upsert({
+      where: { id: "admin" },
+      update: { passwordHash: newHash },
+      create: { id: "admin", passwordHash: newHash },
+    });
+
     return { ok: true };
   });
 

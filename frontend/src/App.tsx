@@ -13,6 +13,7 @@ import ProductList from './pages/admin/ProductList'
 import ProductForm from './pages/admin/ProductForm'
 import AdminProductDetail from './pages/admin/ProductDetail'
 import AdminLocations from './pages/admin/AdminLocations'
+import AdminSettings from './pages/admin/AdminSettings'
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="products/:id" element={<AdminProductDetail />} />
           <Route path="products/:id/edit" element={<ProductForm />} />
           <Route path="locations" element={<AdminLocations />} />
+          <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Routes>
     </BrowserRouter>

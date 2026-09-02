@@ -43,6 +43,13 @@ export function adminMe() {
   return request<{ ok: true }>('/admin/me')
 }
 
+export function adminChangePassword(currentPassword: string, newPassword: string) {
+  return request<{ ok: true }>('/admin/password', {
+    method: 'PUT',
+    body: JSON.stringify({ currentPassword, newPassword }),
+  })
+}
+
 export function adminGetProducts() {
   return request<Product[]>('/admin/products')
 }

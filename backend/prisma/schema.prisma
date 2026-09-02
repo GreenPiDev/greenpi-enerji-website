@@ -7,6 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model AdminSettings {
+  id           String @id @default("admin")
+  passwordHash String
+
+  @@map("admin_settings")
+}
+
 model Location {
   id       String            @id
   adTr     String
