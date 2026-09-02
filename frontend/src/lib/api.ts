@@ -63,9 +63,9 @@ export function getProducts(filters?: { lokasyon?: string; kategori?: string }) 
 }
 
 export function trackProductSummaryView(id: string) {
-  return request<{ ok: true }>(`/api/products/${id}/view-summary`, { method: "POST" });
+  return request<{ ok: true }>(`/api/products/${id}/view-summary`, { method: "POST", body: "{}" });
 }
 
 export function trackProductDetailView(id: string) {
-  return request<{ ok: true }>(`/api/products/${id}/view-detail`, { method: "POST" });
+  return request<{ ok: true }>(`/api/products/${id}/view-detail`, { method: "POST", body: "{}" });
 }

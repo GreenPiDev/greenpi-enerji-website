@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
@@ -67,13 +67,17 @@ function ProductDetail() {
   const [locations, setLocations] = useState<Location[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [products, setProducts] = useState<Product[] | null>(null)
+  const trackedIdRef = useRef<string | null>(null)
 
   useEffect(() => {
     getLocations().then(setLocations).catch(() => {})
     getCategories().then(setCategories).catch(() => {})
     getProducts().then(setProducts).catch(() => setProducts([]))
     window.scrollTo(0, 0)
-    if (id) trackProductDetailView(id).catch(() => {})
+    if (id && trackedIdRef.current !== id) {
+      trackedIdRef.current = id
+      trackProductDetailView(id).catch(() => {})
+    }
   }, [id])
 
   const product = products?.find((p) => p.id === id) ?? null
