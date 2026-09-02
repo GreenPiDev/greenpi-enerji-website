@@ -27,6 +27,8 @@ export type Product = {
   gorselUrl: string | null;
   aciklama: string | null;
   yayinda: boolean;
+  ozetGoruntulemeSayisi: number;
+  detayGoruntulemeSayisi: number;
   lokasyonlar: string[];
   kategoriler: string[];
 };
@@ -58,4 +60,12 @@ export function getProducts(filters?: { lokasyon?: string; kategori?: string }) 
   if (filters?.kategori) params.set("kategori", filters.kategori);
   const qs = params.toString();
   return request<Product[]>(`/api/products${qs ? `?${qs}` : ""}`);
+}
+
+export function trackProductSummaryView(id: string) {
+  return request<{ ok: true }>(`/api/products/${id}/view-summary`, { method: "POST" });
+}
+
+export function trackProductDetailView(id: string) {
+  return request<{ ok: true }>(`/api/products/${id}/view-detail`, { method: "POST" });
 }

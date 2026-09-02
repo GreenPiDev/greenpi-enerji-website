@@ -16,6 +16,8 @@ export function serializeProduct(p: ProductWithRelations) {
     gorselUrl: p.gorselUrl,
     aciklama: p.aciklama,
     yayinda: p.yayinda,
+    ozetGoruntulemeSayisi: p.ozetGoruntulemeSayisi,
+    detayGoruntulemeSayisi: p.detayGoruntulemeSayisi,
     lokasyonlar: p.lokasyonlar.map((l) => l.locationId),
     kategoriler: p.kategoriler.map((k) => k.categoryId),
   };

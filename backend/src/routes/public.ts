@@ -29,4 +29,28 @@ export async function publicRoutes(app: FastifyInstance) {
       return products.map(serializeProduct);
     }
   );
+
+  app.post<{ Params: { id: string } }>("/api/products/:id/view-summary", async (req, reply) => {
+    try {
+      await prisma.product.update({
+        where: { id: req.params.id },
+        data: { ozetGoruntulemeSayisi: { increment: 1 } },
+      });
+    } catch {
+      return reply.code(404).send({ error: "Ürün bulunamadı" });
+    }
+    return { ok: true };
+  });
+
+  app.post<{ Params: { id: string } }>("/api/products/:id/view-detail", async (req, reply) => {
+    try {
+      await prisma.product.update({
+        where: { id: req.params.id },
+        data: { detayGoruntulemeSayisi: { increment: 1 } },
+      });
+    } catch {
+      return reply.code(404).send({ error: "Ürün bulunamadı" });
+    }
+    return { ok: true };
+  });
 }

@@ -53,6 +53,8 @@ model Product {
   gorselUrl      String?
   aciklama       String?
   yayinda        Boolean            @default(true)
+  ozetGoruntulemeSayisi Int         @default(0)
+  detayGoruntulemeSayisi Int        @default(0)
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
   lokasyonlar    ProductLocation[]

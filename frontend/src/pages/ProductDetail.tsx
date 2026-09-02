@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
-import { getCategories, getLocations, getProducts } from '../lib/api'
+import { getCategories, getLocations, getProducts, trackProductDetailView } from '../lib/api'
 import type { Category, Location, Product } from '../lib/api'
 
 function localize(byLang: Record<string, string | null>, lang: string, fallback: string): string {
@@ -73,6 +73,7 @@ function ProductDetail() {
     getCategories().then(setCategories).catch(() => {})
     getProducts().then(setProducts).catch(() => setProducts([]))
     window.scrollTo(0, 0)
+    if (id) trackProductDetailView(id).catch(() => {})
   }, [id])
 
   const product = products?.find((p) => p.id === id) ?? null

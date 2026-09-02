@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import type { Location, Product } from '../lib/api'
+import { trackProductSummaryView } from '../lib/api'
 import MultiSelectDropdown from './MultiSelectDropdown'
 
 function localize(byLang: Record<string, string | null>, lang: string, fallback: string): string {
@@ -155,7 +156,10 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
               {filteredProducts.map((product) => (
                 <li
                   key={product.id}
-                  onClick={() => setSelectedProduct(product)}
+                  onClick={() => {
+                    setSelectedProduct(product)
+                    trackProductSummaryView(product.id).catch(() => {})
+                  }}
                   className="flex cursor-pointer items-center gap-3 rounded-lg p-2 transition hover:bg-white/5"
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-white/5">
