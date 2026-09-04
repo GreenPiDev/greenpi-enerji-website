@@ -31,6 +31,11 @@ const locationInput = z.object({
   yPercent: z.number().min(0).max(100).nullable().optional(),
 });
 
+const categoryInput = z.object({
+  ad: z.string().min(1),
+  sira: z.number().int().optional(),
+});
+
 const passwordInput = z.object({
   currentPassword: z.string().min(1),
   newPassword: z.string().min(8),
@@ -287,6 +292,69 @@ export async function adminRoutes(app: FastifyInstance) {
       const exists = await prisma.location.findUnique({ where: { id } });
       if (!exists) return reply.code(404).send({ error: "Lokasyon bulunamadi" });
       await prisma.location.delete({ where: { id } });
+      return { ok: true };
+    }
+  );
+
+  app.get("/admin/categories", { preHandler: requireAdmin }, async () => {
+    return prisma.category.findMany({ orderBy: { sira: "asc" } });
+  });
+
+  app.post("/admin/categories", { preHandler: requireAdmin }, async (req, reply) => {
+    const parsed = categoryInput.safeParse(req.body);
+    if (!parsed.success) return reply.code(400).send({ error: parsed.error.flatten() });
+    const data = parsed.data;
+
+    const baseId = slugify(data.ad);
+    let id = baseId;
+    let n = 1;
+    while (await prisma.category.findUnique({ where: { id } })) {
+      n += 1;
+      id = `${baseId}-${n}`;
+    }
+
+    const maxSira = await prisma.category.aggregate({ _max: { sira: true } });
+    const created = await prisma.category.create({
+      data: {
+        id,
+        ad: data.ad,
+        sira: data.sira ?? (maxSira._max.sira ?? 0) + 1,
+      },
+    });
+    return created;
+  });
+
+  app.put<{ Params: { id: string } }>(
+    "/admin/categories/:id",
+    { preHandler: requireAdmin },
+    async (req, reply) => {
+      const parsed = categoryInput.safeParse(req.body);
+      if (!parsed.success) return reply.code(400).send({ error: parsed.error.flatten() });
+      const data = parsed.data;
+      const { id } = req.params;
+
+      const exists = await prisma.category.findUnique({ where: { id } });
+      if (!exists) return reply.code(404).send({ error: "Kategori bulunamadi" });
+
+      const updated = await prisma.category.update({
+        where: { id },
+        data: {
+          ad: data.ad,
+          sira: data.sira ?? exists.sira,
+        },
+      });
+      return updated;
+    }
+  );
+
+  app.delete<{ Params: { id: string } }>(
+    "/admin/categories/:id",
+    { preHandler: requireAdmin },
+    async (req, reply) => {
+      const { id } = req.params;
+      const exists = await prisma.category.findUnique({ where: { id } });
+      if (!exists) return reply.code(404).send({ error: "Kategori bulunamadi" });
+      await prisma.category.delete({ where: { id } });
       return { ok: true };
     }
   );

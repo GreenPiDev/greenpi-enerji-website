@@ -13,6 +13,7 @@ import ProductList from './pages/admin/ProductList'
 import ProductForm from './pages/admin/ProductForm'
 import AdminProductDetail from './pages/admin/ProductDetail'
 import AdminLocations from './pages/admin/AdminLocations'
+import AdminCategories from './pages/admin/AdminCategories'
 import AdminSettings from './pages/admin/AdminSettings'
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="products/:id" element={<AdminProductDetail />} />
           <Route path="products/:id/edit" element={<ProductForm />} />
           <Route path="locations" element={<AdminLocations />} />
+          <Route path="categories" element={<AdminCategories />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Routes>

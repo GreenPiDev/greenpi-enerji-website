@@ -110,6 +110,33 @@ export function adminDeleteLocation(id: string) {
   return request<{ ok: true }>(`/admin/locations/${id}`, { method: 'DELETE' })
 }
 
+export type CategoryInput = {
+  ad: string
+  sira?: number
+}
+
+export function adminGetCategories() {
+  return request<Category[]>('/admin/categories')
+}
+
+export function adminCreateCategory(data: CategoryInput) {
+  return request<Category>('/admin/categories', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+}
+
+export function adminUpdateCategory(id: string, data: CategoryInput) {
+  return request<Category>(`/admin/categories/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  })
+}
+
+export function adminDeleteCategory(id: string) {
+  return request<{ ok: true }>(`/admin/categories/${id}`, { method: 'DELETE' })
+}
+
 export async function adminUploadImage(file: File): Promise<{ url: string }> {
   const formData = new FormData()
   formData.append('file', file)

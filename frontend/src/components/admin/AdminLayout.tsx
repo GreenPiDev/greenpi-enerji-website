@@ -7,6 +7,7 @@ import PageBackground from '../PageBackground'
 const NAV_ITEMS = [
   { to: '/admin/products', end: true, label: 'Ürünler' },
   { to: '/admin/locations', end: false, label: 'Lokasyonlar' },
+  { to: '/admin/categories', end: false, label: 'Kategoriler' },
   { to: '/admin/settings', end: false, label: 'Ayarlar' },
 ]
 
