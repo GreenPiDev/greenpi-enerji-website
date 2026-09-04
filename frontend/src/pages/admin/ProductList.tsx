@@ -93,6 +93,7 @@ function ProductList() {
           <table className="w-full text-left text-sm">
             <thead className="bg-[#12245c]/70 text-white/70">
               <tr>
+                <th className="px-4 py-3 font-medium"></th>
                 <th className="px-4 py-3 font-medium">Marka</th>
                 <th className="px-4 py-3 font-medium">Ürün ({filtered.length})</th>
                 <th className="px-4 py-3 font-medium">Lokasyon</th>
@@ -110,6 +111,19 @@ function ProductList() {
                   onClick={() => navigate(`/admin/products/${p.id}`)}
                   className="cursor-pointer hover:bg-[#12245c]/50"
                 >
+                  <td className="px-4 py-3">
+                    <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/5">
+                      {p.gorselUrl ? (
+                        <img src={p.gorselUrl} alt={p.urun} className="h-full w-full object-contain" />
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-white/30">
+                          <rect x="3" y="3" width="18" height="18" rx="2" />
+                          <circle cx="9" cy="9" r="2" />
+                          <path d="m21 15-5-5L5 21" />
+                        </svg>
+                      )}
+                    </div>
+                  </td>
                   <td className="px-4 py-3">{p.marka}</td>
                   <td className="px-4 py-3">{p.urun}</td>
                   <td className="px-4 py-3 text-white/60">{p.lokasyonlar.length}</td>
@@ -155,7 +169,7 @@ function ProductList() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-4 py-8 text-center text-white/50">
+                  <td colSpan={9} className="px-4 py-8 text-center text-white/50">
                     Ürün bulunamadı
                   </td>
                 </tr>
