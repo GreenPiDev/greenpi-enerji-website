@@ -62,7 +62,7 @@ function ProductDetail() {
           <div className="mb-6 flex items-start justify-between gap-4">
             <div>
               <h2 className="text-xl font-semibold">{product.marka}</h2>
-              <p className="text-white/70">{product.urun}</p>
+              <p className="text-white/70">{product.urunTr}</p>
             </div>
             <div className="flex items-center gap-3">
               <Link
@@ -77,7 +77,7 @@ function ProductDetail() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="md:col-span-1">
               {product.gorselUrl ? (
-                <img src={product.gorselUrl} alt={product.urun} className="w-full rounded-xl border border-[#1e3a8a]/40 object-cover" />
+                <img src={product.gorselUrl} alt={product.urunTr} className="w-full rounded-xl border border-[#1e3a8a]/40 object-cover" />
               ) : (
                 <div className="flex aspect-square w-full items-center justify-center rounded-xl border border-dashed border-[#1e3a8a]/40 text-sm text-white/40">
                   Görsel yok
@@ -86,10 +86,10 @@ function ProductDetail() {
             </div>
 
             <div className="space-y-6 md:col-span-2">
-              {product.aciklama && (
+              {product.aciklamaTr && (
                 <div>
                   <h3 className="mb-1 text-sm text-white/50">Açıklama</h3>
-                  <p className="text-white/90">{product.aciklama}</p>
+                  <p className="text-white/90">{product.aciklamaTr}</p>
                 </div>
               )}
 

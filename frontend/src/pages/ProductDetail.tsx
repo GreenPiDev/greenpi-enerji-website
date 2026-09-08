@@ -19,6 +19,24 @@ function categoryLabel(cat: Category, lang: string): string {
   return localize({ tr: cat.adTr, en: cat.adEn, ru: cat.adRu, ar: cat.adAr, az: cat.adAz }, lang, cat.adTr)
 }
 
+function productName(product: Product, lang: string): string {
+  return localize(
+    { tr: product.urunTr, en: product.urunEn, ru: product.urunRu, ar: product.urunAr, az: product.urunAz },
+    lang,
+    product.urunTr,
+  )
+}
+
+function productDescription(product: Product, lang: string): string | null {
+  return (
+    localize(
+      { tr: product.aciklamaTr, en: product.aciklamaEn, ru: product.aciklamaRu, ar: product.aciklamaAr, az: product.aciklamaAz },
+      lang,
+      product.aciklamaTr ?? '',
+    ) || null
+  )
+}
+
 function ArrowIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0">
@@ -126,6 +144,9 @@ function ProductDetail() {
     )
   }
 
+  const name = productName(product, lang)
+  const description = productDescription(product, lang)
+
   const documents = [
     product.katalogLink && { href: product.katalogLink, label: t('Catalog') },
     product.urunWebLink && { href: product.urunWebLink, label: t('Product Page') },
@@ -135,9 +156,9 @@ function ProductDetail() {
   const productJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: product.urun,
+    name,
     brand: { '@type': 'Brand', name: product.marka },
-    description: product.aciklama || undefined,
+    description: description || undefined,
     image: product.gorselUrl || undefined,
     url: `${SITE_URL}/products/${product.id}`,
   }
@@ -145,11 +166,11 @@ function ProductDetail() {
   return (
     <PageBackground>
       <Seo
-        title={product.urun}
+        title={name}
         description={
-          product.aciklama ||
+          description ||
           t('Technical specifications, usage areas, and quote request for {{product}} by {{brand}} — Green Pi Enerji.', {
-            product: product.urun,
+            product: name,
             brand: product.marka,
           })
         }
@@ -168,13 +189,13 @@ function ProductDetail() {
                 {t('Products')}
               </Link>
               <span>/</span>
-              <span className="text-white">{product.urun}</span>
+              <span className="text-white">{name}</span>
             </nav>
 
             <div className="grid grid-cols-1 items-stretch gap-6 py-8 lg:grid-cols-12 lg:gap-6 lg:py-12">
               <div className="flex items-center justify-center rounded-md border border-sky-700 bg-white p-6 shadow-xl lg:col-span-5">
                 {product.gorselUrl ? (
-                  <img src={product.gorselUrl} alt={product.urun} className="h-64 w-full object-contain sm:h-72" />
+                  <img src={product.gorselUrl} alt={name} className="h-64 w-full object-contain sm:h-72" />
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="h-16 w-16 text-slate-300">
                     <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -186,10 +207,10 @@ function ProductDetail() {
 
               <div className="flex flex-col justify-center lg:col-span-7">
                 <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400">{product.marka}</p>
-                <h1 className="mt-2 text-2xl font-bold leading-tight text-white sm:text-3xl">{product.urun}</h1>
+                <h1 className="mt-2 text-2xl font-bold leading-tight text-white sm:text-3xl">{name}</h1>
                 <div className="mt-4 h-0.5 w-16 bg-gradient-to-r from-emerald-400 to-sky-400" />
-                {product.aciklama && (
-                  <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white">{product.aciklama}</p>
+                {description && (
+                  <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white">{description}</p>
                 )}
                 {documents.length > 0 && (
                   <div className="mt-4 flex flex-nowrap gap-2">

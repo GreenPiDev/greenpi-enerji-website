@@ -27,7 +27,7 @@ function ProductList() {
     if (!products) return []
     const q = search.trim().toLowerCase()
     if (!q) return products
-    return products.filter((p) => `${p.marka} ${p.urun}`.toLowerCase().includes(q))
+    return products.filter((p) => `${p.marka} ${p.urunTr}`.toLowerCase().includes(q))
   }, [products, search])
 
   async function confirmDelete() {
@@ -48,12 +48,20 @@ function ProductList() {
     try {
       await adminUpdateProduct(p.id, {
         marka: p.marka,
-        urun: p.urun,
+        urunTr: p.urunTr,
+        urunEn: p.urunEn,
+        urunRu: p.urunRu,
+        urunAr: p.urunAr,
+        urunAz: p.urunAz,
         katalogLink: p.katalogLink,
         urunWebLink: p.urunWebLink,
         datasheetLink: p.datasheetLink,
         gorselUrl: p.gorselUrl,
-        aciklama: p.aciklama,
+        aciklamaTr: p.aciklamaTr,
+        aciklamaEn: p.aciklamaEn,
+        aciklamaRu: p.aciklamaRu,
+        aciklamaAr: p.aciklamaAr,
+        aciklamaAz: p.aciklamaAz,
         yayinda: !p.yayinda,
         lokasyonlar: p.lokasyonlar,
         kategoriler: p.kategoriler,
@@ -114,7 +122,7 @@ function ProductList() {
                   <td className="px-4 py-3">
                     <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/5">
                       {p.gorselUrl ? (
-                        <img src={p.gorselUrl} alt={p.urun} className="h-full w-full object-contain" />
+                        <img src={p.gorselUrl} alt={p.urunTr} className="h-full w-full object-contain" />
                       ) : (
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-white/30">
                           <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -125,7 +133,7 @@ function ProductList() {
                     </div>
                   </td>
                   <td className="px-4 py-3">{p.marka}</td>
-                  <td className="px-4 py-3">{p.urun}</td>
+                  <td className="px-4 py-3">{p.urunTr}</td>
                   <td className="px-4 py-3 text-white/60">{p.lokasyonlar.length}</td>
                   <td className="px-4 py-3 text-white/60">{p.kategoriler.length}</td>
                   <td className="px-4 py-3 text-white/60">{p.ozetGoruntulemeSayisi}</td>
@@ -153,7 +161,7 @@ function ProductList() {
                       <Tooltip label="Sil">
                         <button
                           type="button"
-                          onClick={() => setPendingDelete({ id: p.id, label: `${p.marka} ${p.urun}` })}
+                          onClick={() => setPendingDelete({ id: p.id, label: `${p.marka} ${p.urunTr}` })}
                           className="cursor-pointer rounded-lg p-2 text-red-300 transition hover:bg-red-500/10 hover:text-red-200"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">

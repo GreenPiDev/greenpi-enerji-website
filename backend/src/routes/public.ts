@@ -63,7 +63,7 @@ export async function publicRoutes(app: FastifyInstance) {
           ...(kategori ? { kategoriler: { some: { categoryId: kategori } } } : {}),
         },
         include: productInclude,
-        orderBy: [{ marka: "asc" }, { urun: "asc" }],
+        orderBy: [{ marka: "asc" }, { urunTr: "asc" }],
       });
 
       return products.map(serializeProduct);

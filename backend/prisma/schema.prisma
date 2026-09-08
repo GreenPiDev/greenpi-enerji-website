@@ -55,12 +55,20 @@ model Category {
 model Product {
   id             String             @id
   marka          String
-  urun           String
+  urunTr         String
+  urunEn         String?
+  urunRu         String?
+  urunAr         String?
+  urunAz         String?
   katalogLink    String?
   urunWebLink    String?
   datasheetLink  String?
   gorselUrl      String?
-  aciklama       String?
+  aciklamaTr     String?
+  aciklamaEn     String?
+  aciklamaRu     String?
+  aciklamaAr     String?
+  aciklamaAz     String?
   yayinda        Boolean            @default(true)
   ozetGoruntulemeSayisi Int         @default(0)
   detayGoruntulemeSayisi Int        @default(0)

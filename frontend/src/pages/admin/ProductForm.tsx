@@ -9,14 +9,30 @@ import {
   type ProductInput,
 } from '../../lib/adminApi'
 
+const LANGUAGE_TABS: { key: 'Tr' | 'En' | 'Ru' | 'Ar' | 'Az'; label: string; required?: boolean }[] = [
+  { key: 'Tr', label: 'Türkçe', required: true },
+  { key: 'En', label: 'İngilizce' },
+  { key: 'Ru', label: 'Rusça' },
+  { key: 'Ar', label: 'Arapça' },
+  { key: 'Az', label: 'Azerice' },
+]
+
 const EMPTY: ProductInput = {
   marka: '',
-  urun: '',
+  urunTr: '',
+  urunEn: '',
+  urunRu: '',
+  urunAr: '',
+  urunAz: '',
   katalogLink: '',
   urunWebLink: '',
   datasheetLink: '',
   gorselUrl: '',
-  aciklama: '',
+  aciklamaTr: '',
+  aciklamaEn: '',
+  aciklamaRu: '',
+  aciklamaAr: '',
+  aciklamaAz: '',
   yayinda: true,
   lokasyonlar: [],
   kategoriler: [],
@@ -34,6 +50,7 @@ function ProductForm() {
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [activeLang, setActiveLang] = useState<(typeof LANGUAGE_TABS)[number]['key']>('Tr')
   const aciklamaRef = useRef<HTMLTextAreaElement>(null)
 
   function resizeAciklama() {
@@ -50,7 +67,7 @@ function ProductForm() {
 
   useEffect(() => {
     resizeAciklama()
-  }, [form.aciklama])
+  }, [form, activeLang])
 
   useEffect(() => {
     if (!id) return
@@ -63,12 +80,20 @@ function ProductForm() {
         }
         setForm({
           marka: p.marka,
-          urun: p.urun,
+          urunTr: p.urunTr,
+          urunEn: p.urunEn ?? '',
+          urunRu: p.urunRu ?? '',
+          urunAr: p.urunAr ?? '',
+          urunAz: p.urunAz ?? '',
           katalogLink: p.katalogLink ?? '',
           urunWebLink: p.urunWebLink ?? '',
           datasheetLink: p.datasheetLink ?? '',
           gorselUrl: p.gorselUrl ?? '',
-          aciklama: p.aciklama ?? '',
+          aciklamaTr: p.aciklamaTr ?? '',
+          aciklamaEn: p.aciklamaEn ?? '',
+          aciklamaRu: p.aciklamaRu ?? '',
+          aciklamaAr: p.aciklamaAr ?? '',
+          aciklamaAz: p.aciklamaAz ?? '',
           yayinda: p.yayinda,
           lokasyonlar: p.lokasyonlar,
           kategoriler: p.kategoriler,
@@ -103,11 +128,19 @@ function ProductForm() {
     setSaving(true)
     const payload: ProductInput = {
       ...form,
+      urunEn: form.urunEn || null,
+      urunRu: form.urunRu || null,
+      urunAr: form.urunAr || null,
+      urunAz: form.urunAz || null,
       katalogLink: form.katalogLink || null,
       urunWebLink: form.urunWebLink || null,
       datasheetLink: form.datasheetLink || null,
       gorselUrl: form.gorselUrl || null,
-      aciklama: form.aciklama || null,
+      aciklamaTr: form.aciklamaTr || null,
+      aciklamaEn: form.aciklamaEn || null,
+      aciklamaRu: form.aciklamaRu || null,
+      aciklamaAr: form.aciklamaAr || null,
+      aciklamaAz: form.aciklamaAz || null,
     }
     try {
       if (isEdit && id) {
@@ -177,24 +210,14 @@ function ProductForm() {
             </div>
 
             <div className="space-y-4 md:col-span-2">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Field label="Marka">
-                  <input
-                    required
-                    value={form.marka}
-                    onChange={(e) => setForm((f) => ({ ...f, marka: e.target.value }))}
-                    className={inputClass}
-                  />
-                </Field>
-                <Field label="Ürün adı">
-                  <input
-                    required
-                    value={form.urun}
-                    onChange={(e) => setForm((f) => ({ ...f, urun: e.target.value }))}
-                    className={inputClass}
-                  />
-                </Field>
-              </div>
+              <Field label="Marka">
+                <input
+                  required
+                  value={form.marka}
+                  onChange={(e) => setForm((f) => ({ ...f, marka: e.target.value }))}
+                  className={inputClass}
+                />
+              </Field>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <Field label="Katalog linki">
@@ -223,18 +246,61 @@ function ProductForm() {
                 </Field>
               </div>
 
-              <Field label="Açıklama">
-                <textarea
-                  ref={aciklamaRef}
-                  rows={3}
-                  value={form.aciklama ?? ''}
-                  onChange={(e) => {
-                    setForm((f) => ({ ...f, aciklama: e.target.value }))
-                    resizeAciklama()
-                  }}
-                  className={`${inputClass} resize-none overflow-hidden`}
-                />
-              </Field>
+              <div>
+                <span className="mb-1.5 block text-sm text-white/70">Ürün adı ve açıklaması (dile göre)</span>
+                <div className="flex flex-wrap gap-1 border-b border-[#1e3a8a]/40">
+                  {LANGUAGE_TABS.map((tab) => {
+                    const nameKey = `urun${tab.key}` as keyof ProductInput
+                    const filled = Boolean((form[nameKey] as string | null)?.trim())
+                    return (
+                      <button
+                        key={tab.key}
+                        type="button"
+                        onClick={() => setActiveLang(tab.key)}
+                        className={`cursor-pointer rounded-t-lg border border-b-0 px-3 py-1.5 text-sm transition ${
+                          activeLang === tab.key
+                            ? 'border-[#1e3a8a]/40 bg-[#12245c]/70 text-white'
+                            : 'border-transparent text-white/50 hover:text-white/80'
+                        }`}
+                      >
+                        {tab.label}
+                        {tab.required ? ' *' : filled ? '' : ' ○'}
+                      </button>
+                    )
+                  })}
+                </div>
+                <div className="space-y-3 rounded-b-lg rounded-tr-lg border border-[#1e3a8a]/40 bg-[#0a1638]/40 p-4">
+                  {LANGUAGE_TABS.map((tab) => {
+                    if (tab.key !== activeLang) return null
+                    const nameKey = `urun${tab.key}` as keyof ProductInput
+                    const descKey = `aciklama${tab.key}` as keyof ProductInput
+                    return (
+                      <div key={tab.key} className="space-y-3">
+                        <Field label={`Ürün adı (${tab.label})`}>
+                          <input
+                            required={tab.required}
+                            value={(form[nameKey] as string | null) ?? ''}
+                            onChange={(e) => setForm((f) => ({ ...f, [nameKey]: e.target.value }))}
+                            className={inputClass}
+                          />
+                        </Field>
+                        <Field label={`Açıklama (${tab.label})`}>
+                          <textarea
+                            ref={aciklamaRef}
+                            rows={3}
+                            value={(form[descKey] as string | null) ?? ''}
+                            onChange={(e) => {
+                              setForm((f) => ({ ...f, [descKey]: e.target.value }))
+                              resizeAciklama()
+                            }}
+                            className={`${inputClass} resize-none overflow-hidden`}
+                          />
+                        </Field>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             </div>
           </div>
 

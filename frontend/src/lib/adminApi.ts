@@ -4,12 +4,20 @@ export type { Location, Category, Product }
 
 export type ProductInput = {
   marka: string
-  urun: string
+  urunTr: string
+  urunEn: string | null
+  urunRu: string | null
+  urunAr: string | null
+  urunAz: string | null
   katalogLink: string | null
   urunWebLink: string | null
   datasheetLink: string | null
   gorselUrl: string | null
-  aciklama: string | null
+  aciklamaTr: string | null
+  aciklamaEn: string | null
+  aciklamaRu: string | null
+  aciklamaAr: string | null
+  aciklamaAz: string | null
   yayinda: boolean
   lokasyonlar: string[]
   kategoriler: string[]

@@ -21,6 +21,24 @@ function locationDescription(loc: Location, lang: string): string | null {
   ) || null
 }
 
+function productName(product: Product, lang: string): string {
+  return localize(
+    { tr: product.urunTr, en: product.urunEn, ru: product.urunRu, ar: product.urunAr, az: product.urunAz },
+    lang,
+    product.urunTr,
+  )
+}
+
+function productDescription(product: Product, lang: string): string | null {
+  return (
+    localize(
+      { tr: product.aciklamaTr, en: product.aciklamaEn, ru: product.aciklamaRu, ar: product.aciklamaAr, az: product.aciklamaAz },
+      lang,
+      product.aciklamaTr ?? '',
+    ) || null
+  )
+}
+
 type LocationFilterDrawerProps = {
   open: boolean
   location: Location | null
@@ -67,7 +85,7 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
       if (selectedLocations.length > 0 && !p.lokasyonlar.some((id) => selectedLocations.includes(id))) return false
       if (selectedBrands.length > 0 && !selectedBrands.includes(p.marka)) return false
       if (query) {
-        const haystack = `${p.marka} ${p.urun}`.toLocaleLowerCase('tr')
+        const haystack = `${p.marka} ${p.urunTr}`.toLocaleLowerCase('tr')
         if (!haystack.includes(query)) return false
       }
       return true
@@ -164,7 +182,7 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-md border border-white/10 bg-white/5">
                     {product.gorselUrl ? (
-                      <img src={product.gorselUrl} alt={product.urun} className="h-full w-full object-cover" />
+                      <img src={product.gorselUrl} alt={productName(product, lang)} className="h-full w-full object-cover" />
                     ) : (
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-white/30">
                         <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -175,7 +193,7 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
                   </div>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-white">{product.marka}</p>
-                    <p className="truncate text-xs text-white/60">{product.urun}</p>
+                    <p className="truncate text-xs text-white/60">{productName(product, lang)}</p>
                   </div>
                 </li>
               ))}
@@ -196,7 +214,7 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
             <div className="flex items-start justify-between gap-4 border-b border-white/10 p-5 pb-4">
               <div className="min-w-0">
                 <p className="text-xs font-medium tracking-wide text-white/50">{selectedProduct.marka}</p>
-                <h2 className="mt-0.5 truncate text-base font-semibold text-white">{selectedProduct.urun}</h2>
+                <h2 className="mt-0.5 truncate text-base font-semibold text-white">{productName(selectedProduct, lang)}</h2>
               </div>
               <button
                 type="button"
@@ -214,7 +232,7 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
             <div className="flex-1 overflow-y-auto p-5 landscape:flex-none landscape:overflow-visible">
               <div className="flex h-40 w-full items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/5">
                 {selectedProduct.gorselUrl ? (
-                  <img src={selectedProduct.gorselUrl} alt={selectedProduct.urun} className="h-full w-full object-contain" />
+                  <img src={selectedProduct.gorselUrl} alt={productName(selectedProduct, lang)} className="h-full w-full object-contain" />
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-white/30">
                     <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -224,8 +242,10 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
                 )}
               </div>
 
-              {selectedProduct.aciklama && (
-                <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/70">{selectedProduct.aciklama}</p>
+              {productDescription(selectedProduct, lang) && (
+                <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/70">
+                  {productDescription(selectedProduct, lang)}
+                </p>
               )}
 
               <div className="mt-4 flex flex-col gap-2">

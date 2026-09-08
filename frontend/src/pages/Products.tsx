@@ -18,6 +18,24 @@ function categoryLabel(cat: Category, lang: string): string {
   return localize({ tr: cat.adTr, en: cat.adEn, ru: cat.adRu, ar: cat.adAr, az: cat.adAz }, lang, cat.adTr)
 }
 
+function productName(product: Product, lang: string): string {
+  return localize(
+    { tr: product.urunTr, en: product.urunEn, ru: product.urunRu, ar: product.urunAr, az: product.urunAz },
+    lang,
+    product.urunTr,
+  )
+}
+
+function productDescription(product: Product, lang: string): string | null {
+  return (
+    localize(
+      { tr: product.aciklamaTr, en: product.aciklamaEn, ru: product.aciklamaRu, ar: product.aciklamaAr, az: product.aciklamaAz },
+      lang,
+      product.aciklamaTr ?? '',
+    ) || null
+  )
+}
+
 type Badge = { key: string; label: string; onRemove: () => void }
 
 function matchesProduct(
@@ -26,7 +44,7 @@ function matchesProduct(
   exclude?: 'locations' | 'brands' | 'categories',
 ): boolean {
   if (filters.search) {
-    const haystack = `${product.marka} ${product.urun}`.toLocaleLowerCase('tr')
+    const haystack = `${product.marka} ${product.urunTr}`.toLocaleLowerCase('tr')
     if (!haystack.includes(filters.search)) return false
   }
   if (exclude !== 'locations' && filters.locations.length > 0) {
@@ -79,8 +97,10 @@ function FilterSection({
   )
 }
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product, lang }: { product: Product; lang: string }) {
   const navigate = useNavigate()
+  const name = productName(product, lang)
+  const description = productDescription(product, lang)
   return (
     <div
       onClick={() => navigate(`/products/${product.id}`)}
@@ -88,7 +108,7 @@ function ProductCard({ product }: { product: Product }) {
     >
       <div className="flex h-40 w-full items-center justify-center overflow-hidden border-b border-sky-900 bg-white">
         {product.gorselUrl ? (
-          <img src={product.gorselUrl} alt={product.urun} className="h-full w-full object-contain" />
+          <img src={product.gorselUrl} alt={name} className="h-full w-full object-contain" />
         ) : (
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-slate-300">
             <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -99,8 +119,8 @@ function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <p className="text-xs font-semibold tracking-wide text-white">{product.marka}</p>
-        <h3 className="text-sm font-semibold text-white">{product.urun}</h3>
-        {product.aciklama && <p className="line-clamp-4 text-xs leading-relaxed text-white">{product.aciklama}</p>}
+        <h3 className="text-sm font-semibold text-white">{name}</h3>
+        {description && <p className="line-clamp-4 text-xs leading-relaxed text-white">{description}</p>}
       </div>
     </div>
   )
@@ -333,7 +353,7 @@ function Products() {
             ) : (
               <div className="grid grid-cols-2 gap-5 xl:grid-cols-4">
                 {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard key={product.id} product={product} lang={lang} />
                 ))}
               </div>
             )}

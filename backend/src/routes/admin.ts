@@ -57,12 +57,20 @@ async function getAdminPasswordHash(): Promise<string | null> {
 
 const productInput = z.object({
   marka: z.string().min(1),
-  urun: z.string().min(1),
+  urunTr: z.string().min(1),
+  urunEn: z.string().nullable().optional(),
+  urunRu: z.string().nullable().optional(),
+  urunAr: z.string().nullable().optional(),
+  urunAz: z.string().nullable().optional(),
   katalogLink: z.string().url().nullable().optional(),
   urunWebLink: z.string().url().nullable().optional(),
   datasheetLink: z.string().url().nullable().optional(),
   gorselUrl: z.string().nullable().optional(),
-  aciklama: z.string().nullable().optional(),
+  aciklamaTr: z.string().nullable().optional(),
+  aciklamaEn: z.string().nullable().optional(),
+  aciklamaRu: z.string().nullable().optional(),
+  aciklamaAr: z.string().nullable().optional(),
+  aciklamaAz: z.string().nullable().optional(),
   yayinda: z.boolean().optional(),
   lokasyonlar: z.array(z.string()).default([]),
   kategoriler: z.array(z.string()).default([]),
@@ -133,7 +141,7 @@ export async function adminRoutes(app: FastifyInstance) {
   app.get("/admin/products", { preHandler: requireAdmin }, async () => {
     const products = await prisma.product.findMany({
       include: productInclude,
-      orderBy: [{ marka: "asc" }, { urun: "asc" }],
+      orderBy: [{ marka: "asc" }, { urunTr: "asc" }],
     });
     return products.map(serializeProduct);
   });
@@ -143,7 +151,7 @@ export async function adminRoutes(app: FastifyInstance) {
     if (!parsed.success) return reply.code(400).send({ error: parsed.error.flatten() });
     const data = parsed.data;
 
-    const baseId = slugify(`${data.marka}-${data.urun}`);
+    const baseId = slugify(`${data.marka}-${data.urunTr}`);
     let id = baseId;
     let n = 1;
     while (await prisma.product.findUnique({ where: { id } })) {
@@ -155,12 +163,20 @@ export async function adminRoutes(app: FastifyInstance) {
       data: {
         id,
         marka: data.marka,
-        urun: data.urun,
+        urunTr: data.urunTr,
+        urunEn: data.urunEn ?? null,
+        urunRu: data.urunRu ?? null,
+        urunAr: data.urunAr ?? null,
+        urunAz: data.urunAz ?? null,
         katalogLink: data.katalogLink ?? null,
         urunWebLink: data.urunWebLink ?? null,
         datasheetLink: data.datasheetLink ?? null,
         gorselUrl: data.gorselUrl ?? null,
-        aciklama: data.aciklama ?? null,
+        aciklamaTr: data.aciklamaTr ?? null,
+        aciklamaEn: data.aciklamaEn ?? null,
+        aciklamaRu: data.aciklamaRu ?? null,
+        aciklamaAr: data.aciklamaAr ?? null,
+        aciklamaAz: data.aciklamaAz ?? null,
         yayinda: data.yayinda ?? true,
         lokasyonlar: { createMany: { data: data.lokasyonlar.map((locationId) => ({ locationId })) } },
         kategoriler: { createMany: { data: data.kategoriler.map((categoryId) => ({ categoryId })) } },
@@ -190,12 +206,20 @@ export async function adminRoutes(app: FastifyInstance) {
           where: { id },
           data: {
             marka: data.marka,
-            urun: data.urun,
+            urunTr: data.urunTr,
+            urunEn: data.urunEn ?? null,
+            urunRu: data.urunRu ?? null,
+            urunAr: data.urunAr ?? null,
+            urunAz: data.urunAz ?? null,
             katalogLink: data.katalogLink ?? null,
             urunWebLink: data.urunWebLink ?? null,
             datasheetLink: data.datasheetLink ?? null,
             gorselUrl: data.gorselUrl ?? null,
-            aciklama: data.aciklama ?? null,
+            aciklamaTr: data.aciklamaTr ?? null,
+            aciklamaEn: data.aciklamaEn ?? null,
+            aciklamaRu: data.aciklamaRu ?? null,
+            aciklamaAr: data.aciklamaAr ?? null,
+            aciklamaAz: data.aciklamaAz ?? null,
             yayinda: data.yayinda ?? true,
             lokasyonlar: { createMany: { data: data.lokasyonlar.map((locationId) => ({ locationId })) } },
             kategoriler: { createMany: { data: data.kategoriler.map((categoryId) => ({ categoryId })) } },
