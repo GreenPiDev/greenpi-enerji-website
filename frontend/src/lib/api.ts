@@ -16,7 +16,20 @@ export type Location = {
   xPercent: number | null;
   yPercent: number | null;
 };
-export type Category = { id: string; ad: string; sira: number };
+export type Category = {
+  id: string;
+  adTr: string;
+  adEn: string | null;
+  adRu: string | null;
+  adAr: string | null;
+  adAz: string | null;
+  aciklamaTr: string | null;
+  aciklamaEn: string | null;
+  aciklamaRu: string | null;
+  aciklamaAr: string | null;
+  aciklamaAz: string | null;
+  sira: number;
+};
 export type Product = {
   id: string;
   marka: string;

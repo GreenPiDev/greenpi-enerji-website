@@ -36,7 +36,7 @@ function ProductDetail() {
     ? product.lokasyonlar.map((locId) => locations.find((l) => l.id === locId)?.adTr ?? locId)
     : []
   const categoryNames = product
-    ? product.kategoriler.map((catId) => categories.find((c) => c.id === catId)?.ad ?? catId)
+    ? product.kategoriler.map((catId) => categories.find((c) => c.id === catId)?.adTr ?? catId)
     : []
 
   return (

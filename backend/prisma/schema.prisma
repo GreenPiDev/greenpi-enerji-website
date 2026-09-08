@@ -36,7 +36,16 @@ model Location {
 
 model Category {
   id       String            @id
-  ad       String
+  adTr     String
+  adEn     String?
+  adRu     String?
+  adAr     String?
+  adAz     String?
+  aciklamaTr String?
+  aciklamaEn String?
+  aciklamaRu String?
+  aciklamaAr String?
+  aciklamaAz String?
   sira     Int               @default(0)
   urunler  ProductCategory[]
 

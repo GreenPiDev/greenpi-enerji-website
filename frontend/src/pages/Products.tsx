@@ -14,6 +14,10 @@ function locationLabel(loc: Location, lang: string): string {
   return localize({ tr: loc.adTr, en: loc.adEn, ru: loc.adRu, ar: loc.adAr, az: loc.adAz }, lang, loc.adTr)
 }
 
+function categoryLabel(cat: Category, lang: string): string {
+  return localize({ tr: cat.adTr, en: cat.adEn, ru: cat.adRu, ar: cat.adAr, az: cat.adAz }, lang, cat.adTr)
+}
+
 type Badge = { key: string; label: string; onRemove: () => void }
 
 function matchesProduct(
@@ -185,12 +189,12 @@ function Products() {
       categories
         .map((cat) => ({
           value: cat.id,
-          label: cat.ad,
+          label: categoryLabel(cat, lang),
           count: products.filter((p) => matchesProduct(p, facetFilters, 'categories') && p.kategoriler.includes(cat.id))
             .length,
         }))
         .filter((opt) => opt.count > 0 || selectedCategories.includes(opt.value)),
-    [categories, products, facetFilters, selectedCategories],
+    [categories, products, facetFilters, lang, selectedCategories],
   )
 
   const filteredProducts = useMemo(() => products.filter((p) => matchesProduct(p, filters)), [products, filters])
@@ -217,7 +221,7 @@ function Products() {
       const cat = categories.find((c) => c.id === id)
       return {
         key: `cat-${id}`,
-        label: cat ? cat.ad : id,
+        label: cat ? categoryLabel(cat, lang) : id,
         onRemove: () => setSelectedCategories(selectedCategories.filter((v) => v !== id)),
       }
     }),

@@ -15,6 +15,10 @@ function locationLabel(loc: Location, lang: string): string {
   return localize({ tr: loc.adTr, en: loc.adEn, ru: loc.adRu, ar: loc.adAr, az: loc.adAz }, lang, loc.adTr)
 }
 
+function categoryLabel(cat: Category, lang: string): string {
+  return localize({ tr: cat.adTr, en: cat.adEn, ru: cat.adRu, ar: cat.adAr, az: cat.adAz }, lang, cat.adTr)
+}
+
 function ArrowIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0">
@@ -95,7 +99,7 @@ function ProductDetail() {
     ? product.kategoriler
         .map((catId) => categories.find((c) => c.id === catId))
         .filter((c): c is Category => Boolean(c))
-        .map((c) => c.ad)
+        .map((c) => categoryLabel(c, lang))
     : []
 
   if (!products) {

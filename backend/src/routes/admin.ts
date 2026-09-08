@@ -32,7 +32,16 @@ const locationInput = z.object({
 });
 
 const categoryInput = z.object({
-  ad: z.string().min(1),
+  adTr: z.string().min(1),
+  adEn: z.string().nullable().optional(),
+  adRu: z.string().nullable().optional(),
+  adAr: z.string().nullable().optional(),
+  adAz: z.string().nullable().optional(),
+  aciklamaTr: z.string().nullable().optional(),
+  aciklamaEn: z.string().nullable().optional(),
+  aciklamaRu: z.string().nullable().optional(),
+  aciklamaAr: z.string().nullable().optional(),
+  aciklamaAz: z.string().nullable().optional(),
   sira: z.number().int().optional(),
 });
 
@@ -305,7 +314,7 @@ export async function adminRoutes(app: FastifyInstance) {
     if (!parsed.success) return reply.code(400).send({ error: parsed.error.flatten() });
     const data = parsed.data;
 
-    const baseId = slugify(data.ad);
+    const baseId = slugify(data.adTr);
     let id = baseId;
     let n = 1;
     while (await prisma.category.findUnique({ where: { id } })) {
@@ -317,7 +326,16 @@ export async function adminRoutes(app: FastifyInstance) {
     const created = await prisma.category.create({
       data: {
         id,
-        ad: data.ad,
+        adTr: data.adTr,
+        adEn: data.adEn,
+        adRu: data.adRu,
+        adAr: data.adAr,
+        adAz: data.adAz,
+        aciklamaTr: data.aciklamaTr,
+        aciklamaEn: data.aciklamaEn,
+        aciklamaRu: data.aciklamaRu,
+        aciklamaAr: data.aciklamaAr,
+        aciklamaAz: data.aciklamaAz,
         sira: data.sira ?? (maxSira._max.sira ?? 0) + 1,
       },
     });
@@ -339,7 +357,16 @@ export async function adminRoutes(app: FastifyInstance) {
       const updated = await prisma.category.update({
         where: { id },
         data: {
-          ad: data.ad,
+          adTr: data.adTr,
+          adEn: data.adEn,
+          adRu: data.adRu,
+          adAr: data.adAr,
+          adAz: data.adAz,
+          aciklamaTr: data.aciklamaTr,
+          aciklamaEn: data.aciklamaEn,
+          aciklamaRu: data.aciklamaRu,
+          aciklamaAr: data.aciklamaAr,
+          aciklamaAz: data.aciklamaAz,
           sira: data.sira ?? exists.sira,
         },
       });

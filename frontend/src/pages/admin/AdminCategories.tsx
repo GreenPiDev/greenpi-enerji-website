@@ -9,12 +9,41 @@ import {
 import Tooltip from '../../components/Tooltip'
 import ConfirmModal from '../../components/ConfirmModal'
 
+const EMPTY_DRAFT = {
+  adTr: '',
+  adEn: '',
+  adRu: '',
+  adAr: '',
+  adAz: '',
+  aciklamaTr: '',
+  aciklamaEn: '',
+  aciklamaRu: '',
+  aciklamaAr: '',
+  aciklamaAz: '',
+}
+
+const NAME_FIELDS: { key: keyof typeof EMPTY_DRAFT; label: string; required?: boolean }[] = [
+  { key: 'adTr', label: 'Türkçe', required: true },
+  { key: 'adEn', label: 'İngilizce' },
+  { key: 'adRu', label: 'Rusça' },
+  { key: 'adAr', label: 'Arapça' },
+  { key: 'adAz', label: 'Azerice' },
+]
+
+const DESCRIPTION_FIELDS: { key: keyof typeof EMPTY_DRAFT; label: string }[] = [
+  { key: 'aciklamaTr', label: 'Türkçe' },
+  { key: 'aciklamaEn', label: 'İngilizce' },
+  { key: 'aciklamaRu', label: 'Rusça' },
+  { key: 'aciklamaAr', label: 'Arapça' },
+  { key: 'aciklamaAz', label: 'Azerice' },
+]
+
 function AdminCategories() {
   const [categories, setCategories] = useState<Category[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [pendingDelete, setPendingDelete] = useState<{ id: string; label: string } | null>(null)
   const [formModal, setFormModal] = useState<{ mode: 'create' | 'edit'; id?: string } | null>(null)
-  const [draftAd, setDraftAd] = useState('')
+  const [draft, setDraft] = useState(EMPTY_DRAFT)
   const [reorderingId, setReorderingId] = useState<string | null>(null)
 
   function reload() {
@@ -28,26 +57,49 @@ function AdminCategories() {
   }, [])
 
   function openCreateModal() {
-    setDraftAd('')
+    setDraft(EMPTY_DRAFT)
     setFormModal({ mode: 'create' })
   }
 
   function openEditModal(c: Category) {
-    setDraftAd(c.ad)
+    setDraft({
+      adTr: c.adTr,
+      adEn: c.adEn ?? '',
+      adRu: c.adRu ?? '',
+      adAr: c.adAr ?? '',
+      adAz: c.adAz ?? '',
+      aciklamaTr: c.aciklamaTr ?? '',
+      aciklamaEn: c.aciklamaEn ?? '',
+      aciklamaRu: c.aciklamaRu ?? '',
+      aciklamaAr: c.aciklamaAr ?? '',
+      aciklamaAz: c.aciklamaAz ?? '',
+    })
     setFormModal({ mode: 'edit', id: c.id })
   }
 
   async function handleSubmitForm() {
     if (!formModal) return
-    const ad = draftAd.trim()
-    if (!ad) return
+    const adTr = draft.adTr.trim()
+    if (!adTr) return
     setError(null)
+    const payload = {
+      adTr,
+      adEn: draft.adEn.trim() || null,
+      adRu: draft.adRu.trim() || null,
+      adAr: draft.adAr.trim() || null,
+      adAz: draft.adAz.trim() || null,
+      aciklamaTr: draft.aciklamaTr.trim() || null,
+      aciklamaEn: draft.aciklamaEn.trim() || null,
+      aciklamaRu: draft.aciklamaRu.trim() || null,
+      aciklamaAr: draft.aciklamaAr.trim() || null,
+      aciklamaAz: draft.aciklamaAz.trim() || null,
+    }
     try {
       if (formModal.mode === 'create') {
-        await adminCreateCategory({ ad })
+        await adminCreateCategory(payload)
       } else if (formModal.id) {
         const existing = categories?.find((c) => c.id === formModal.id)
-        await adminUpdateCategory(formModal.id, { ad, sira: existing?.sira })
+        await adminUpdateCategory(formModal.id, { ...payload, sira: existing?.sira })
       }
       setFormModal(null)
       reload()
@@ -78,8 +130,8 @@ function AdminCategories() {
     setReorderingId(current.id)
     try {
       await Promise.all([
-        adminUpdateCategory(current.id, { ad: current.ad, sira: target.sira }),
-        adminUpdateCategory(target.id, { ad: target.ad, sira: current.sira }),
+        adminUpdateCategory(current.id, { adTr: current.adTr, sira: target.sira }),
+        adminUpdateCategory(target.id, { adTr: target.adTr, sira: current.sira }),
       ])
       reload()
     } catch (e) {
@@ -138,7 +190,7 @@ function AdminCategories() {
                       </svg>
                     </button>
                   </div>
-                  <p className="truncate text-sm text-white">{c.ad}</p>
+                  <p className="truncate text-sm text-white">{c.adTr}</p>
                 </div>
                 <div className="flex shrink-0 items-center gap-1">
                   <Tooltip label="Düzenle">
@@ -156,7 +208,7 @@ function AdminCategories() {
                   <Tooltip label="Sil">
                     <button
                       type="button"
-                      onClick={() => setPendingDelete({ id: c.id, label: c.ad })}
+                      onClick={() => setPendingDelete({ id: c.id, label: c.adTr })}
                       className="cursor-pointer rounded-lg p-2 text-red-300 transition hover:bg-red-500/10 hover:text-red-200"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
@@ -180,23 +232,42 @@ function AdminCategories() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-2xl border border-white/20 bg-neutral-900/90 p-6 text-white shadow-xl backdrop-blur-md"
+            className="w-full max-w-md rounded-2xl border border-white/20 bg-neutral-900/90 p-6 text-white shadow-xl backdrop-blur-md"
           >
             <h2 className="mb-4 text-lg font-semibold">
               {formModal.mode === 'create' ? 'Yeni kategori' : 'Kategoriyi düzenle'}
             </h2>
-            <label className="block">
-              <span className="mb-1 block text-xs text-white/50">Kategori adı *</span>
-              <input
-                autoFocus
-                value={draftAd}
-                onChange={(e) => setDraftAd(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSubmitForm()
-                }}
-                className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white outline-none backdrop-blur-md focus:border-white/40"
-              />
-            </label>
+            <div className="space-y-3">
+              {NAME_FIELDS.map((field) => (
+                <label key={field.key} className="block">
+                  <span className="mb-1 block text-xs text-white/50">
+                    {field.label}
+                    {field.required ? ' *' : ''}
+                  </span>
+                  <input
+                    autoFocus={field.key === 'adTr'}
+                    value={draft[field.key]}
+                    onChange={(e) => setDraft((d) => ({ ...d, [field.key]: e.target.value }))}
+                    className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white outline-none backdrop-blur-md focus:border-white/40"
+                  />
+                </label>
+              ))}
+            </div>
+
+            <p className="mt-5 mb-2 text-xs font-medium text-white/50">Açıklama</p>
+            <div className="max-h-64 space-y-3 overflow-y-auto pr-1">
+              {DESCRIPTION_FIELDS.map((field) => (
+                <label key={field.key} className="block">
+                  <span className="mb-1 block text-xs text-white/50">{field.label}</span>
+                  <textarea
+                    value={draft[field.key]}
+                    onChange={(e) => setDraft((d) => ({ ...d, [field.key]: e.target.value }))}
+                    rows={2}
+                    className="w-full resize-none rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white outline-none backdrop-blur-md focus:border-white/40"
+                  />
+                </label>
+              ))}
+            </div>
 
             <div className="mt-6 flex justify-end gap-3">
               <button
@@ -209,7 +280,7 @@ function AdminCategories() {
               <button
                 type="button"
                 onClick={handleSubmitForm}
-                disabled={!draftAd.trim()}
+                disabled={!draft.adTr.trim()}
                 className="cursor-pointer rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-md transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {formModal.mode === 'create' ? 'Oluştur' : 'Kaydet'}

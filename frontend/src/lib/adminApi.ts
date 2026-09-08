@@ -111,7 +111,16 @@ export function adminDeleteLocation(id: string) {
 }
 
 export type CategoryInput = {
-  ad: string
+  adTr: string
+  adEn?: string | null
+  adRu?: string | null
+  adAr?: string | null
+  adAz?: string | null
+  aciklamaTr?: string | null
+  aciklamaEn?: string | null
+  aciklamaRu?: string | null
+  aciklamaAr?: string | null
+  aciklamaAz?: string | null
   sira?: number
 }
 

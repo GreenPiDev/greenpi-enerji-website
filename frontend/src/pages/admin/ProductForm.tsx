@@ -280,7 +280,7 @@ function ProductForm() {
                       onChange={() => setForm((f) => ({ ...f, kategoriler: toggle(f.kategoriler, cat.id) }))}
                       className="hidden"
                     />
-                    {cat.ad}
+                    {cat.adTr}
                   </label>
                 ))}
               </div>
