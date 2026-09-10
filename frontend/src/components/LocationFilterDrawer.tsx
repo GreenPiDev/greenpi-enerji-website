@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import type { Location, Product } from '../lib/api'
 import { trackProductSummaryView } from '../lib/api'
 import MultiSelectDropdown from './MultiSelectDropdown'
+import Model3DViewerModal from './Model3DViewerModal'
 
 function localize(byLang: Record<string, string | null>, lang: string, fallback: string): string {
   return byLang[lang] || fallback
@@ -55,6 +56,7 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
   const [selectedBrands, setSelectedBrands] = useState<string[]>([])
   const [selectedLocations, setSelectedLocations] = useState<string[]>([])
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+  const [model3dOpen, setModel3dOpen] = useState(false)
 
   useEffect(() => {
     if (location) {
@@ -253,11 +255,21 @@ function LocationFilterDrawer({ open, location, locations, products, onClose }: 
                   <PanelButton label={t('Product Detail')} onClick={() => navigate(`/products/${selectedProduct.id}`)} />
                   <PanelButton label={t('Get a quote')} onClick={() => navigate('/contact-form')} />
                 </div>
+                {selectedProduct.model3dUrl && (
+                  <PanelButton label={t('View 3D Model')} onClick={() => setModel3dOpen(true)} />
+                )}
               </div>
             </div>
           </>
         )}
       </div>
+
+      <Model3DViewerModal
+        open={model3dOpen}
+        url={selectedProduct?.model3dUrl ?? null}
+        title={selectedProduct ? productName(selectedProduct, lang) : undefined}
+        onClose={() => setModel3dOpen(false)}
+      />
     </>
   )
 }

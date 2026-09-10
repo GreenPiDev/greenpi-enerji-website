@@ -106,6 +106,7 @@ function ProductList() {
                 <th className="px-4 py-3 font-medium">Ürün ({filtered.length})</th>
                 <th className="px-4 py-3 font-medium">Lokasyon</th>
                 <th className="px-4 py-3 font-medium">Kategori</th>
+                <th className="px-4 py-3 font-medium">3D Model</th>
                 <th className="px-4 py-3 font-medium">Özet Görüntüleme</th>
                 <th className="px-4 py-3 font-medium">Detay Görüntüleme</th>
                 <th className="px-4 py-3 font-medium">Yayında</th>
@@ -136,6 +137,7 @@ function ProductList() {
                   <td className="px-4 py-3">{p.urunTr}</td>
                   <td className="px-4 py-3 text-white/60">{p.lokasyonlar.length}</td>
                   <td className="px-4 py-3 text-white/60">{p.kategoriler.length}</td>
+                  <td className="px-4 py-3">{p.model3dUrl ? '✅' : '❌'}</td>
                   <td className="px-4 py-3 text-white/60">{p.ozetGoruntulemeSayisi}</td>
                   <td className="px-4 py-3 text-white/60">{p.detayGoruntulemeSayisi}</td>
                   <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
@@ -177,7 +179,7 @@ function ProductList() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="px-4 py-8 text-center text-white/50">
+                  <td colSpan={10} className="px-4 py-8 text-center text-white/50">
                     Ürün bulunamadı
                   </td>
                 </tr>
