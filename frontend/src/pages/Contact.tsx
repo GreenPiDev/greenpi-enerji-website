@@ -64,26 +64,23 @@ function Contact() {
           <InfoCard>
             <span className="text-sm font-semibold tracking-widest text-emerald-400/70">{t('Ankara')}</span>
             <h2 className="mb-4 mt-1 text-xl font-semibold text-white">{t('Office')}</h2>
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=G%C3%BCm%C3%BC%C5%9F%20Cd.%20No%3A40%2C%20Konutkent%2C%2006810%20Yenimahalle%2FAnkara"
-              target="_blank"
-              rel="noreferrer"
-              className="mb-6 block cursor-pointer leading-relaxed text-white/75 hover:text-emerald-300"
-            >
-              Gümüş Cd. No:40, Konutkent, 06810 Yenimahalle/Ankara
-            </a>
-            <div className="space-y-2 text-white/85">
-              <a href="tel:+903128701260" className="block hover:text-emerald-300">
-                +90 312 870 12 60
+            <div className="space-y-2">
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=G%C3%BCm%C3%BC%C5%9F%20Cd.%20No%3A40%2C%20Konutkent%2C%2006810%20Yenimahalle%2FAnkara"
+                target="_blank"
+                rel="noreferrer"
+                className="block cursor-pointer leading-relaxed text-white/75 hover:text-emerald-300"
+              >
+                Gümüş Cd. No:40, Konutkent, 06810 Yenimahalle/Ankara
               </a>
-              <a href="tel:+905468582020" className="block hover:text-emerald-300">
+              <a href="tel:+905468582020" className="block text-white/85 hover:text-emerald-300">
                 +90 546 858 20 20
               </a>
-              <a href="mailto:info@greenpi.com.tr" className="block hover:text-emerald-300">
+              <a href="mailto:info@greenpi.com.tr" className="block text-white/85 hover:text-emerald-300">
                 info@greenpi.com.tr
               </a>
             </div>
-            <div className="mt-6 flex items-center gap-3">
+            <div className="mt-2 flex items-center gap-3">
               <a
                 href="https://www.instagram.com/greenpienergy/"
                 target="_blank"
