@@ -66,6 +66,7 @@ const productInput = z.object({
   urunWebLink: z.string().url().nullable().optional(),
   datasheetLink: z.string().url().nullable().optional(),
   gorselUrl: z.string().nullable().optional(),
+  model3dUrl: z.string().nullable().optional(),
   aciklamaTr: z.string().nullable().optional(),
   aciklamaEn: z.string().nullable().optional(),
   aciklamaRu: z.string().nullable().optional(),
@@ -128,7 +129,12 @@ export async function adminRoutes(app: FastifyInstance) {
     "/admin/upload",
     { preHandler: requireAdmin },
     async (req, reply) => {
-      const folder = req.query.folder === "hero-videos" ? "hero-videos" : "product-images";
+      const folder =
+        req.query.folder === "hero-videos"
+          ? "hero-videos"
+          : req.query.folder === "product-models"
+            ? "product-models"
+            : "product-images";
       const file = await req.file();
       if (!file) return reply.code(400).send({ error: "Dosya bulunamadi" });
 
@@ -172,6 +178,7 @@ export async function adminRoutes(app: FastifyInstance) {
         urunWebLink: data.urunWebLink ?? null,
         datasheetLink: data.datasheetLink ?? null,
         gorselUrl: data.gorselUrl ?? null,
+        model3dUrl: data.model3dUrl ?? null,
         aciklamaTr: data.aciklamaTr ?? null,
         aciklamaEn: data.aciklamaEn ?? null,
         aciklamaRu: data.aciklamaRu ?? null,
@@ -215,6 +222,7 @@ export async function adminRoutes(app: FastifyInstance) {
             urunWebLink: data.urunWebLink ?? null,
             datasheetLink: data.datasheetLink ?? null,
             gorselUrl: data.gorselUrl ?? null,
+            model3dUrl: data.model3dUrl ?? null,
             aciklamaTr: data.aciklamaTr ?? null,
             aciklamaEn: data.aciklamaEn ?? null,
             aciklamaRu: data.aciklamaRu ?? null,

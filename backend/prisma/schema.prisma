@@ -64,6 +64,7 @@ model Product {
   urunWebLink    String?
   datasheetLink  String?
   gorselUrl      String?
+  model3dUrl     String?
   aciklamaTr     String?
   aciklamaEn     String?
   aciklamaRu     String?

@@ -6,6 +6,7 @@ import {
   adminGetProducts,
   adminUpdateProduct,
   adminUploadImage,
+  adminUploadModel3d,
   type ProductInput,
 } from '../../lib/adminApi'
 
@@ -28,6 +29,7 @@ const EMPTY: ProductInput = {
   urunWebLink: '',
   datasheetLink: '',
   gorselUrl: '',
+  model3dUrl: '',
   aciklamaTr: '',
   aciklamaEn: '',
   aciklamaRu: '',
@@ -49,6 +51,7 @@ function ProductForm() {
   const [loading, setLoading] = useState(isEdit)
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [uploadingModel, setUploadingModel] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [activeLang, setActiveLang] = useState<(typeof LANGUAGE_TABS)[number]['key']>('Tr')
   const aciklamaRef = useRef<HTMLTextAreaElement>(null)
@@ -89,6 +92,7 @@ function ProductForm() {
           urunWebLink: p.urunWebLink ?? '',
           datasheetLink: p.datasheetLink ?? '',
           gorselUrl: p.gorselUrl ?? '',
+          model3dUrl: p.model3dUrl ?? '',
           aciklamaTr: p.aciklamaTr ?? '',
           aciklamaEn: p.aciklamaEn ?? '',
           aciklamaRu: p.aciklamaRu ?? '',
@@ -122,6 +126,25 @@ function ProductForm() {
     }
   }
 
+  async function handleModel3dChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (!file.name.toLowerCase().endsWith('.glb')) {
+      setError('Sadece .glb dosyası yüklenebilir')
+      return
+    }
+    setUploadingModel(true)
+    setError(null)
+    try {
+      const { url } = await adminUploadModel3d(file)
+      setForm((f) => ({ ...f, model3dUrl: url }))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Yükleme başarısız')
+    } finally {
+      setUploadingModel(false)
+    }
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError(null)
@@ -136,6 +159,7 @@ function ProductForm() {
       urunWebLink: form.urunWebLink || null,
       datasheetLink: form.datasheetLink || null,
       gorselUrl: form.gorselUrl || null,
+      model3dUrl: form.model3dUrl || null,
       aciklamaTr: form.aciklamaTr || null,
       aciklamaEn: form.aciklamaEn || null,
       aciklamaRu: form.aciklamaRu || null,
@@ -351,6 +375,37 @@ function ProductForm() {
                 ))}
               </div>
             </div>
+          </div>
+
+          <div className="mt-6">
+            <span className="mb-2 block text-sm text-white/70">3D model (.glb)</span>
+            <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-[#1e3a8a]/40 px-4 py-3 transition hover:border-blue-300/60">
+              <input type="file" accept=".glb,model/gltf-binary" onChange={handleModel3dChange} className="hidden" />
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 shrink-0 text-white/40">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+                <path d="m3.3 7 8.7 5 8.7-5" />
+                <path d="M12 22V12" />
+              </svg>
+              <span className="flex-1 truncate text-sm text-white/70">
+                {uploadingModel
+                  ? 'Yükleniyor...'
+                  : form.model3dUrl
+                    ? form.model3dUrl.split('/').pop()
+                    : '.glb dosyası yüklemek için tıklayın'}
+              </span>
+              {form.model3dUrl && !uploadingModel && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setForm((f) => ({ ...f, model3dUrl: '' }))
+                  }}
+                  className="cursor-pointer rounded-full px-2 py-1 text-xs text-white/50 hover:text-white"
+                >
+                  Kaldır
+                </button>
+              )}
+            </label>
           </div>
 
           <label className="mt-6 flex items-center gap-2 text-sm text-white/80">

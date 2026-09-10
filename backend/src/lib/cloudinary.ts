@@ -6,7 +6,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-type MediaFolder = "product-images" | "hero-videos";
+type MediaFolder = "product-images" | "hero-videos" | "product-models";
+
+function resourceTypeFor(folder: MediaFolder): "image" | "video" | "raw" {
+  if (folder === "hero-videos") return "video";
+  if (folder === "product-models") return "raw";
+  return "image";
+}
 
 export async function uploadMedia(
   buffer: Buffer,
@@ -16,7 +22,7 @@ export async function uploadMedia(
   const dataUri = `data:${mimetype};base64,${buffer.toString("base64")}`;
   const result = await cloudinary.uploader.upload(dataUri, {
     folder: `green-pi-enerji/${folder}`,
-    resource_type: folder === "hero-videos" ? "video" : "image",
+    resource_type: resourceTypeFor(folder),
   });
   return result.secure_url;
 }

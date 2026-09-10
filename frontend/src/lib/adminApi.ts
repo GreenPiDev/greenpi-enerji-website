@@ -13,6 +13,7 @@ export type ProductInput = {
   urunWebLink: string | null
   datasheetLink: string | null
   gorselUrl: string | null
+  model3dUrl: string | null
   aciklamaTr: string | null
   aciklamaEn: string | null
   aciklamaRu: string | null
@@ -155,9 +156,20 @@ export function adminDeleteCategory(id: string) {
 }
 
 export async function adminUploadImage(file: File): Promise<{ url: string }> {
+  return adminUploadFile(file, 'product-images')
+}
+
+export async function adminUploadModel3d(file: File): Promise<{ url: string }> {
+  return adminUploadFile(file, 'product-models')
+}
+
+async function adminUploadFile(
+  file: File,
+  folder: 'product-images' | 'hero-videos' | 'product-models'
+): Promise<{ url: string }> {
   const formData = new FormData()
   formData.append('file', file)
-  const res = await fetch(`${API_BASE_URL}/admin/upload?folder=product-images`, {
+  const res = await fetch(`${API_BASE_URL}/admin/upload?folder=${folder}`, {
     method: 'POST',
     credentials: 'include',
     body: formData,

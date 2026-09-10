@@ -42,6 +42,7 @@ export type Product = {
   urunWebLink: string | null;
   datasheetLink: string | null;
   gorselUrl: string | null;
+  model3dUrl: string | null;
   aciklamaTr: string | null;
   aciklamaEn: string | null;
   aciklamaRu: string | null;
