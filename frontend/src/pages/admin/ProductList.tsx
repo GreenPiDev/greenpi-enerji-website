@@ -57,6 +57,7 @@ function ProductList() {
         urunWebLink: p.urunWebLink,
         datasheetLink: p.datasheetLink,
         gorselUrl: p.gorselUrl,
+        model3dUrl: p.model3dUrl,
         aciklamaTr: p.aciklamaTr,
         aciklamaEn: p.aciklamaEn,
         aciklamaRu: p.aciklamaRu,

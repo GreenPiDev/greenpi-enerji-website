@@ -63,7 +63,7 @@ function Model3DViewerModal({ open, url, title, onClose }: Model3DViewerModalPro
     const duration = el.duration
 
     el.timeScale = opening ? 1 : -1
-    el.play({ repetitions: Infinity })
+    el.play({ repetitions: Infinity, pingpong: false })
     setAnimating(true)
 
     function watch() {
