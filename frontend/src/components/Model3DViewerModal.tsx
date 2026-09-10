@@ -127,7 +127,7 @@ function Model3DViewerModal({ open, url, title, onClose }: Model3DViewerModalPro
               disabled={animating}
               className="absolute left-3 top-3 z-10 cursor-pointer rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md transition hover:bg-white/20 disabled:cursor-default disabled:opacity-60"
             >
-              {isOpenState ? t('Close Doors') : t('Open Doors')}
+              {isOpenState ? t('Reverse Animation') : t('Play Animation')}
             </button>
           )}
           <div className="absolute bottom-3 right-3 z-10 flex flex-col overflow-hidden rounded-full border border-white/20 bg-white/10 backdrop-blur-md">
