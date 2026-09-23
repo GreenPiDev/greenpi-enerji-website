@@ -1,6 +1,8 @@
 {
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "https://api.greenpi.com.tr/sitemap.xml" },
+    { "source": "/product-catalog", "destination": "https://greenpi-product-katalog.vercel.app/product-catalog" },
+    { "source": "/product-catalog/:path*", "destination": "https://greenpi-product-katalog.vercel.app/product-catalog/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

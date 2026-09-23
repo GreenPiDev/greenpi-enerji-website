@@ -63,6 +63,13 @@ function Header() {
               <span className="absolute inset-x-0 bottom-0 h-px w-full origin-left scale-x-0 bg-emerald-400 transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </Link>
           ))}
+          <a
+            href="/product-catalog"
+            className="group relative py-1 text-base font-semibold tracking-wide text-sky-500 transition hover:text-emerald-400"
+          >
+            {t('Product catalog')}
+            <span className="absolute inset-x-0 bottom-0 h-px w-full origin-left scale-x-0 bg-emerald-400 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+          </a>
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-4">
@@ -114,6 +121,13 @@ function Header() {
               {t(item.label)}
             </Link>
           ))}
+          <a
+            href="/product-catalog"
+            onClick={() => setMenuOpen(false)}
+            className="rounded-lg px-3 py-3 text-base font-medium text-white/90 transition hover:bg-white/10 hover:text-white"
+          >
+            {t('Product catalog')}
+          </a>
         </nav>
       </div>
     </>
