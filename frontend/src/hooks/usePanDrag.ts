@@ -44,7 +44,18 @@ export function usePanDrag(
     // Yeniden boyutlandığında (veya ilk yerleşimde) içerik ortalanır.
     applyOffset((viewport.clientWidth - stageWidth) / 2)
 
+    // Sürükleme, pointerdown anında değil belirli bir piksel eşiği aşıldıktan
+    // sonra başlar. Bunun asıl nedeni: eşiksiz (her pointerdown'da hemen
+    // setPointerCapture çağıran) bir kurulumda Safari, üzerinde kırmızı nokta
+    // (MapMarker) gibi tıklanabilir bir çocuk eleman olan basit tıklamalarda
+    // "click" event'ini hiç dispatch etmiyor — pointer capture alındıktan
+    // sonra bırakılsa bile. Chrome/Firefox'ta bu sorun yok, bu yüzden sadece
+    // gerçek sürükleme (eşik aşımı) başladığında capture almak hem bu Safari
+    // bug'ını by-pass ediyor hem de markerlara tıklamayı sürüklemeden ayırıyor.
+    const DRAG_THRESHOLD = 6
     let dragging = false
+    let pointerDownActive = false
+    let capturedPointerId: number | null = null
     let startX = 0
     let startOffset = 0
 
@@ -82,17 +93,29 @@ export function usePanDrag(
 
     function handlePointerDown(e: PointerEvent) {
       stopMomentum()
-      dragging = true
+      pointerDownActive = true
+      dragging = false
       startX = e.clientX
       startOffset = offsetRef.current
       lastX = e.clientX
       lastT = e.timeStamp
       velocity = 0
-      stage!.setPointerCapture(e.pointerId)
+      capturedPointerId = e.pointerId
+      // setPointerCapture kasıtlı olarak burada ÇAĞRILMIYOR — bkz. yukarıdaki
+      // DRAG_THRESHOLD yorumu. Sadece gerçek sürükleme başladığında (bkz.
+      // handlePointerMove) alınıyor.
     }
     function handlePointerMove(e: PointerEvent) {
-      if (!dragging) return
-      applyOffset(startOffset + (e.clientX - startX))
+      if (!pointerDownActive) return
+      const delta = e.clientX - startX
+
+      if (!dragging) {
+        if (Math.abs(delta) < DRAG_THRESHOLD) return
+        dragging = true
+        if (capturedPointerId !== null) stage!.setPointerCapture(capturedPointerId)
+      }
+
+      applyOffset(startOffset + delta)
 
       const dt = e.timeStamp - lastT
       if (dt > 0) {
@@ -101,9 +124,13 @@ export function usePanDrag(
       lastX = e.clientX
       lastT = e.timeStamp
     }
-    function handlePointerUp(e: PointerEvent) {
+    function handlePointerUp() {
+      pointerDownActive = false
+      if (dragging && capturedPointerId !== null) {
+        stage!.releasePointerCapture(capturedPointerId)
+      }
       dragging = false
-      stage!.releasePointerCapture(e.pointerId)
+      capturedPointerId = null
       // Son örnek gürültülü/aşırı yüksek olabilir (çok küçük dt), bu yüzden
       // hem tavan konur hem de gerçek hissedilen hıza göre yumuşatılır.
       const MAX_VELOCITY = 1.2
