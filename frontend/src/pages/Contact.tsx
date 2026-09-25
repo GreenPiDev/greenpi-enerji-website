@@ -73,6 +73,9 @@ function Contact() {
               >
                 Gümüş Cd. No:40, Konutkent, 06810 Yenimahalle/Ankara
               </a>
+              <a href="tel:+903128701260" className="block text-white/85 hover:text-emerald-300">
+                0312 870 12 60
+              </a>
               <a href="tel:+905468582020" className="block text-white/85 hover:text-emerald-300">
                 +90 546 858 20 20
               </a>

@@ -154,6 +154,9 @@ function ContactForm() {
               <p className="mb-6 leading-relaxed text-white/75">{t(DIRECT_TEXT)}</p>
               <div className="space-y-2 text-white/85">
                 <span className="block">{t('Ankara')}</span>
+                <a href="tel:+903128701260" className="block hover:text-emerald-300">
+                  0312 870 12 60
+                </a>
                 <a href="tel:+905468582020" className="block hover:text-emerald-300">
                   +90 546 858 20 20
                 </a>
