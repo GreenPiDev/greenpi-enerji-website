@@ -3,3 +3,6 @@ export const HERO_VIDEO_INTRO =
 
 export const HERO_VIDEO_LOOP =
   'https://res.cloudinary.com/j2kzfrih/video/upload/v1788330677/2.mp4'
+
+export const FEATURE_VIDEO =
+  'https://res.cloudinary.com/j2kzfrih/video/upload/q_auto,f_auto/v1791805845/3.mp4'

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import LanguageSwitcher from './LanguageSwitcher'
+import FeatureVideoModal from './FeatureVideoModal'
 
 const NAV_ITEMS = [
   { to: '/about', label: 'About us' },
@@ -16,6 +17,7 @@ function Header() {
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
   const [hidden, setHidden] = useState(false)
+  const [videoOpen, setVideoOpen] = useState(false)
   const lastScrollY = useRef(0)
 
   useEffect(() => {
@@ -73,6 +75,17 @@ function Header() {
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-4">
+          <button
+            type="button"
+            onClick={() => setVideoOpen(true)}
+            aria-label={t('Play')}
+            className="cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 p-2 text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 sm:hidden"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+              <path d="M7 5v14l12-7z" />
+            </svg>
+          </button>
+
           <LanguageSwitcher />
 
           <Link
@@ -130,6 +143,8 @@ function Header() {
           </a>
         </nav>
       </div>
+
+      <FeatureVideoModal open={videoOpen} onClose={() => setVideoOpen(false)} />
     </>
   )
 }

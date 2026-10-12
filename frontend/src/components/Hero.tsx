@@ -4,6 +4,7 @@ import { HERO_VIDEO_INTRO, HERO_VIDEO_LOOP } from '../lib/media'
 import { getLocations, getProducts, type Location, type Product } from '../lib/api'
 import MapMarker from './MapMarker'
 import LocationFilterDrawer from './LocationFilterDrawer'
+import FeatureVideoPlayer from './FeatureVideoPlayer'
 import { getHeroExplored, setHeroExplored } from '../lib/heroState'
 import { useCoverStage } from '../hooks/useCoverStage'
 import { usePanDrag } from '../hooks/usePanDrag'
@@ -217,6 +218,8 @@ function Hero() {
               ))}
         </div>
       </div>
+
+      {showLoop && <FeatureVideoPlayer />}
 
       <LocationFilterDrawer
         open={drawerOpen}
