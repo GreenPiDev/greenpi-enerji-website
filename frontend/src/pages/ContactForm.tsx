@@ -24,6 +24,10 @@ const DIRECT_SUBTITLE = 'Our technical team is here for you'
 const DIRECT_TEXT =
   'You can reach our technical team for product selection, project consultancy, pricing, and delivery timelines.'
 
+const PRIVACY_TITLE = 'Privacy Policy'
+const PRIVACY_INTRO = 'To view our privacy policy, please'
+const PRIVACY_LINK_TEXT = 'click here'
+
 const SUBMIT_ERROR = 'Something went wrong while sending your request. Please try again or contact us directly.'
 
 const EMPTY = {
@@ -143,7 +147,8 @@ function ContactForm() {
           <p className="mb-10 leading-relaxed text-emerald-300">{t(INTRO_TEXT)}</p>
 
           <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
-          <div className="relative overflow-hidden rounded-2xl border border-emerald-400/15 bg-slate-900/85 p-8 shadow-2xl lg:order-2 lg:col-span-1">
+          <div className="flex flex-col gap-6 lg:order-2 lg:col-span-1">
+          <div className="relative overflow-hidden rounded-2xl border border-emerald-400/15 bg-slate-900/85 p-8 shadow-2xl">
             <div
               className="pointer-events-none absolute left-0 top-0 h-24 w-24 bg-emerald-400/20"
               style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
@@ -171,6 +176,26 @@ function ContactForm() {
                 {t('Contact Information')}
               </Link>
             </div>
+          </div>
+
+          <div className="relative overflow-hidden rounded-2xl border border-emerald-400/15 bg-slate-900/85 p-8 shadow-2xl">
+            <div
+              className="pointer-events-none absolute left-0 top-0 h-24 w-24 bg-emerald-400/20"
+              style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
+            />
+            <div className="relative">
+              <h2 className="mb-3 text-xl font-semibold text-white">{t(PRIVACY_TITLE)}</h2>
+              <p className="leading-relaxed text-white/85">
+                {t(PRIVACY_INTRO)}{' '}
+                <Link
+                  to="/privacy-policy"
+                  className="text-sky-400 underline transition hover:text-sky-300"
+                >
+                  {t(PRIVACY_LINK_TEXT)}
+                </Link>
+              </p>
+            </div>
+          </div>
           </div>
 
           <form

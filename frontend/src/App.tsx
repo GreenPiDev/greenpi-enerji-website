@@ -7,6 +7,7 @@ import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import Contact from './pages/Contact'
 import ContactForm from './pages/ContactForm'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminLayout from './components/admin/AdminLayout'
 import ProductList from './pages/admin/ProductList'
@@ -29,6 +30,7 @@ function App() {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/contact-form" element={<ContactForm />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Route>
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
