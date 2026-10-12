@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
 import Seo from '../components/Seo'
 
@@ -14,6 +15,8 @@ const COMPANY_EMAIL = 'info@greenpi.com.tr'
 const L_COMPANY_NAME = 'Company name:'
 const L_ADDRESS = 'Address:'
 const L_EMAIL = 'Email:'
+
+const BACK_TO_CONTACT_FORM = '← Back to contact form'
 
 const LAST_UPDATED_LABEL = 'Last updated:'
 const LAST_UPDATED_DATE = '12.10.2026'
@@ -97,6 +100,12 @@ function PrivacyPolicy() {
     <PageBackground>
       <Seo title={t('Privacy Policy')} description={t('Green Pi Enerji privacy policy.')} />
       <div className="min-h-screen w-full px-6 pb-20 pt-32 md:px-10">
+        <Link
+          to="/contact-form"
+          className="mb-4 inline-block cursor-pointer text-white underline transition hover:text-sky-300"
+        >
+          {t(BACK_TO_CONTACT_FORM)}
+        </Link>
         <h1 className="mb-10 text-3xl font-semibold text-white">{t('Privacy Policy')}</h1>
         <div className="relative w-full overflow-hidden rounded-2xl border border-emerald-400/15 bg-slate-900/85 p-8 shadow-2xl">
           <div
