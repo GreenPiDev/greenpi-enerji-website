@@ -8,6 +8,7 @@ function FeatureVideoPlayer() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [playing, setPlaying] = useState(true)
   const [muted, setMuted] = useState(true)
+  const [closed, setClosed] = useState(false)
 
   function togglePlay() {
     const video = videoRef.current
@@ -36,11 +37,25 @@ function FeatureVideoPlayer() {
     }
   }
 
+  if (closed) return null
+
   return (
     <div
       ref={containerRef}
-      className="group absolute bottom-6 right-6 z-20 hidden w-80 overflow-hidden rounded-xl bg-black opacity-60 shadow-lg transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100 sm:block sm:w-[28rem] md:w-[32rem]"
+      className="group absolute bottom-6 right-6 z-20 hidden w-80 overflow-hidden rounded-xl bg-black shadow-lg sm:block sm:w-[28rem] md:w-[32rem]"
     >
+      <button
+        type="button"
+        onClick={() => setClosed(true)}
+        aria-label={t('Close')}
+        className="absolute right-2 top-2 z-10 rounded-full bg-black/50 p-1.5 text-white hover:bg-black/70"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+          <path d="M18 6 6 18" />
+          <path d="M6 6l12 12" />
+        </svg>
+      </button>
+
       <video
         ref={videoRef}
         className="h-full w-full object-cover"
