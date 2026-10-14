@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
@@ -33,6 +34,46 @@ function LinkedinIcon() {
   )
 }
 
+function CopyIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+    </svg>
+  )
+}
+
+function CheckIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  )
+}
+
+function CopyButton({ value, label }: { value: string; label: string }) {
+  const { t } = useTranslation()
+  const [copied, setCopied] = useState(false)
+
+  async function handleCopy() {
+    await navigator.clipboard.writeText(value)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      aria-label={label}
+      title={copied ? t('Copied') : label}
+      className="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-white/50 transition hover:text-emerald-300"
+    >
+      {copied ? <CheckIcon /> : <CopyIcon />}
+    </button>
+  )
+}
+
 function InfoCard({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-emerald-400/15 bg-slate-900/85 p-8 shadow-2xl">
@@ -65,23 +106,32 @@ function Contact() {
             <span className="text-sm font-semibold tracking-widest text-emerald-400/70">{t('Ankara')}</span>
             <h2 className="mb-4 mt-1 text-xl font-semibold text-white">{t('Office')}</h2>
             <div className="space-y-2">
-              <a
-                href="https://www.google.com/maps/search/?api=1&query=G%C3%BCm%C3%BC%C5%9F%20Cd.%20No%3A40%2C%20Konutkent%2C%2006810%20Yenimahalle%2FAnkara"
-                target="_blank"
-                rel="noreferrer"
-                className="block cursor-pointer leading-relaxed text-white/75 hover:text-emerald-300"
-              >
-                Gümüş Cd. No:40, Konutkent, 06810 Yenimahalle/Ankara
-              </a>
+              <div className="flex items-start gap-2">
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=G%C3%BCm%C3%BC%C5%9F%20Cd.%20No%3A40%2C%20Konutkent%2C%2006810%20Yenimahalle%2FAnkara"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="cursor-pointer leading-relaxed text-white/75 hover:text-emerald-300"
+                >
+                  Gümüş Cd. No:40, Konutkent, 06810 Yenimahalle/Ankara
+                </a>
+                <CopyButton
+                  value="Gümüş Cd. No:40, Konutkent, 06810 Yenimahalle/Ankara"
+                  label={t('Copy address')}
+                />
+              </div>
               <a href="tel:+903128701260" className="block text-white/85 hover:text-emerald-300">
                 0312 870 12 60
               </a>
               <a href="tel:+905468582020" className="block text-white/85 hover:text-emerald-300">
                 +90 546 858 20 20
               </a>
-              <a href="mailto:info@greenpi.com.tr" className="block text-white/85 hover:text-emerald-300">
-                info@greenpi.com.tr
-              </a>
+              <div className="flex items-center gap-2">
+                <a href="mailto:info@greenpi.com.tr" className="text-white/85 hover:text-emerald-300">
+                  info@greenpi.com.tr
+                </a>
+                <CopyButton value="info@greenpi.com.tr" label={t('Copy email')} />
+              </div>
             </div>
             <div className="mt-2 flex items-center gap-3">
               <a
