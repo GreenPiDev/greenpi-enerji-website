@@ -353,7 +353,7 @@ function CompanyPresentation() {
 
         <div className="relative mx-auto max-w-6xl">
           <Reveal>
-            <SectionKicker>{t('Why Green Pi Energy')}</SectionKicker>
+            <SectionKicker>{t('Partnership')}</SectionKicker>
             <h2 className="font-display mt-4 max-w-3xl text-3xl font-medium leading-tight text-white sm:text-5xl">
               {t('Why partner with Green Pi Energy')}
             </h2>
