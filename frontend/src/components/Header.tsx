@@ -59,19 +59,28 @@ function Header() {
             <Link
               key={item.to}
               to={item.to}
-              className="group relative py-1 text-base font-semibold tracking-wide text-sky-500 transition hover:text-emerald-400"
+              className="group relative py-1 text-base font-semibold tracking-wide text-sky-500 transition hover:text-emerald-700"
             >
               {t(item.label)}
-              <span className="absolute inset-x-0 bottom-0 h-px w-full origin-left scale-x-0 bg-emerald-400 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+              <span className="absolute inset-x-0 bottom-0 h-px w-full origin-left scale-x-0 bg-emerald-700 transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </Link>
           ))}
           <a
             href="/product-catalog"
-            className="group relative py-1 text-base font-semibold tracking-wide text-sky-500 transition hover:text-emerald-400"
+            className="group relative py-1 text-base font-semibold tracking-wide text-sky-500 transition hover:text-emerald-700"
           >
             {t('Product catalog')}
-            <span className="absolute inset-x-0 bottom-0 h-px w-full origin-left scale-x-0 bg-emerald-400 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            <span className="absolute inset-x-0 bottom-0 h-px w-full origin-left scale-x-0 bg-emerald-700 transition-transform duration-300 ease-out group-hover:scale-x-100" />
           </a>
+          {/* Patron onayı bekleniyor: onaylanınca açılacak.
+          <Link
+            to="/company-presentation"
+            className="group relative py-1 text-base font-semibold tracking-wide text-sky-500 transition hover:text-emerald-700"
+          >
+            {t('Company Presentation')}
+            <span className="absolute inset-x-0 bottom-0 h-px w-full origin-left scale-x-0 bg-emerald-700 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+          </Link>
+          */}
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-4">
@@ -79,7 +88,7 @@ function Header() {
             type="button"
             onClick={() => setVideoOpen(true)}
             aria-label={t('Play')}
-            className="cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 p-2 text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 sm:hidden"
+            className="cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 p-2 text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-700 sm:hidden"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
               <path d="M7 5v14l12-7z" />
@@ -90,7 +99,7 @@ function Header() {
 
           <Link
             to="/contact-form"
-            className="cursor-pointer whitespace-nowrap rounded-full border border-sky-400/30 bg-sky-600 px-3 py-1.5 text-xs font-medium tracking-wide text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 sm:px-5 sm:py-2 sm:text-sm"
+            className="cursor-pointer whitespace-nowrap rounded-full border border-sky-400/30 bg-sky-600 px-3 py-1.5 text-xs font-medium tracking-wide text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-700 sm:px-5 sm:py-2 sm:text-sm"
           >
             {t('Get a quote')}
           </Link>
@@ -99,7 +108,7 @@ function Header() {
             type="button"
             onClick={() => setMenuOpen(true)}
             aria-label={t('Menu')}
-            className="cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 p-2 text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 sm:p-2.5 md:hidden"
+            className="cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 p-2 text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-700 sm:p-2.5 md:hidden"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
               <path d="M4 6h16" />
@@ -141,6 +150,15 @@ function Header() {
           >
             {t('Product catalog')}
           </a>
+          {/* Patron onayı bekleniyor: onaylanınca açılacak.
+          <Link
+            to="/company-presentation"
+            onClick={() => setMenuOpen(false)}
+            className="rounded-lg px-3 py-3 text-base font-medium text-white/90 transition hover:bg-white/10 hover:text-white"
+          >
+            {t('Company Presentation')}
+          </Link>
+          */}
         </nav>
       </div>
 

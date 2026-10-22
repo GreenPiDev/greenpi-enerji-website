@@ -9,7 +9,7 @@ const LANGUAGES = [
   { code: 'az', label: 'AZ' },
 ]
 
-function LanguageSwitcher() {
+function LanguageSwitcher({ variant = 'default' }: { variant?: 'default' | 'ghost' }) {
   const { i18n } = useTranslation()
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -28,13 +28,14 @@ function LanguageSwitcher() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [open])
 
+  const triggerClassName =
+    variant === 'ghost'
+      ? 'cursor-pointer shrink-0 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium tracking-wide text-white backdrop-blur-md transition hover:border-emerald-400/40 hover:bg-white/10 hover:text-emerald-300 sm:px-5 sm:py-2 sm:text-sm'
+      : 'cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 px-3 py-1.5 text-xs font-medium tracking-wide text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-700 sm:px-5 sm:py-2 sm:text-sm'
+
   return (
     <div ref={rootRef} className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="cursor-pointer shrink-0 rounded-full border border-sky-400/30 bg-sky-600 px-3 py-1.5 text-xs font-medium tracking-wide text-white backdrop-blur-md transition hover:bg-sky-500 hover:text-emerald-300 sm:px-5 sm:py-2 sm:text-sm"
-      >
+      <button type="button" onClick={() => setOpen((v) => !v)} className={triggerClassName}>
         {current.label}
       </button>
 
