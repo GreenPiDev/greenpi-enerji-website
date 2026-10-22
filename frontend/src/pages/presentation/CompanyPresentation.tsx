@@ -170,7 +170,9 @@ function CompanyPresentation() {
               </div>
               <div className="border-t border-white/10 p-6">
                 <h3 className="font-display text-xl text-white">{t(item.title)}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-400">{t(item.body)}</p>
+                <p className="mt-3 line-clamp-2 min-h-[2.75rem] text-sm leading-relaxed text-slate-400">
+                  {t(item.body)}
+                </p>
               </div>
             </Reveal>
           ))}
