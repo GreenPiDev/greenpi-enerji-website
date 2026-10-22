@@ -15,7 +15,6 @@ import {
   processSteps,
   sectors,
   solutionCapabilities,
-  stats,
   turkeyProjects,
 } from './content'
 
@@ -127,15 +126,6 @@ function CompanyPresentation() {
                 <span className="font-display text-sm text-sky-400">{String(i + 1).padStart(2, '0')}</span>
                 <h3 className="font-display mt-4 text-xl text-white sm:text-2xl">{t(line.title)}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-400 sm:text-base">{t(line.body)}</p>
-              </Reveal>
-            ))}
-          </div>
-
-          <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-3">
-            {stats.map((stat, i) => (
-              <Reveal key={stat.label} delay={i * 100} className="bg-[#0a1119] p-8 text-center sm:p-10">
-                <p className="font-display text-3xl font-semibold text-emerald-400 sm:text-4xl">{stat.value}</p>
-                <p className="mt-2 text-sm text-slate-400">{t(stat.label)}</p>
               </Reveal>
             ))}
           </div>

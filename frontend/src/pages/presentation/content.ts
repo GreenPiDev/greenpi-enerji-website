@@ -9,12 +9,6 @@ export const businessLines = [
   },
 ]
 
-export const stats = [
-  { value: '5', label: 'countries served outside Türkiye' },
-  { value: '3.5 MVA', label: 'packaged solar substation, Greece' },
-  { value: '$2.5M', label: 'fuse supply agreement with ASTOR' },
-]
-
 export const solutionCapabilities = [
   {
     title: 'Compact Kiosk Substations',
