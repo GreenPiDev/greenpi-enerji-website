@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import PageBackground from '../components/PageBackground'
 import Seo from '../components/Seo'
+import Model3DViewerModal from '../components/Model3DViewerModal'
 import { getCategories, getLocations, getProducts, trackProductDetailView } from '../lib/api'
 import type { Category, Location, Product } from '../lib/api'
 import { SITE_URL } from '../lib/seo'
@@ -91,6 +92,7 @@ function ProductDetail() {
   const [locations, setLocations] = useState<Location[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [products, setProducts] = useState<Product[] | null>(null)
+  const [model3dOpen, setModel3dOpen] = useState(false)
   const trackedIdRef = useRef<string | null>(null)
 
   useEffect(() => {
@@ -148,8 +150,9 @@ function ProductDetail() {
   const description = productDescription(product, lang)
 
   const documents = [
-    product.katalogLink && { href: product.katalogLink, label: t('Catalog') },
-    product.urunWebLink && { href: product.urunWebLink, label: t('Product Page') },
+    // Dış bağlantılar geçici olarak kapatıldı:
+    // product.katalogLink && { href: product.katalogLink, label: t('Catalog') },
+    // product.urunWebLink && { href: product.urunWebLink, label: t('Product Page') },
     product.datasheetLink && { href: product.datasheetLink, label: t('Datasheet') },
   ].filter((d): d is { href: string; label: string } => Boolean(d))
 
@@ -212,7 +215,7 @@ function ProductDetail() {
                 {description && (
                   <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white">{description}</p>
                 )}
-                {documents.length > 0 && (
+                {(documents.length > 0 || product.model3dUrl) && (
                   <div className="mt-4 flex flex-nowrap gap-2">
                     {documents.map((doc) => (
                       <a
@@ -226,6 +229,15 @@ function ProductDetail() {
                         <ExternalLinkIcon />
                       </a>
                     ))}
+                    {product.model3dUrl && (
+                      <button
+                        type="button"
+                        onClick={() => setModel3dOpen(true)}
+                        className="flex min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-sky-600 bg-sky-950 px-2 py-2 text-xs font-medium text-white transition hover:border-emerald-400/50 sm:flex-none sm:justify-start sm:px-3"
+                      >
+                        <span className="truncate">{t('View 3D Model')}</span>
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
@@ -308,6 +320,12 @@ function ProductDetail() {
         </div>
         </div>
       </div>
+      <Model3DViewerModal
+        open={model3dOpen}
+        url={product.model3dUrl ?? null}
+        title={name}
+        onClose={() => setModel3dOpen(false)}
+      />
     </PageBackground>
   )
 }
