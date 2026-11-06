@@ -2,7 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { prisma } from "../lib/prisma.js";
 import { productInclude, serializeProduct } from "../lib/serialize.js";
 
-const STATIC_PAGES = ["", "/about", "/solutions", "/products", "/contact"];
+const STATIC_PAGES = ["", "/about", "/solutions", "/products", "/certificates", "/contact"];
 
 function escapeXml(value: string): string {
   return value.replace(/[<>&'"]/g, (c) => {

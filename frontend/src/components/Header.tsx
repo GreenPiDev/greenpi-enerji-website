@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { to: '/about', label: 'About us' },
   { to: '/solutions', label: 'Solutions' },
   { to: '/products', label: 'Products' },
+  { to: '/certificates', label: 'Our certificates' },
   { to: '/contact', label: 'Contact' },
 ]
 
